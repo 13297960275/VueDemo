@@ -1,31 +1,32 @@
 <template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <hr>
-    <h2>默认视图</h2>
-    <router-view/>
-    <hr>
-    <h2>title命名视图</h2>
-    <router-view name="title"></router-view>
-    <hr>
-    <h2>image命名视图</h2>
-    <router-view name="img"></router-view>
-  </div>
+    <div id="app">
+        <router-view></router-view>
+        <!-- <img src="./assets/logo.png"> -->
+        <!-- demo
+        <div>
+            <hr>
+            <h2>默认视图</h2>
+            <router-view/>
+            <hr>
+            <h2>title命名视图</h2>
+            <router-view name="title"></router-view>
+            <hr>
+            <h2>image命名视图</h2>
+            <router-view name="img"></router-view>
+        </div> -->
+    </div>
 </template>
 
 <script>
-  export default {
-    name: 'App'
-  }
+    export default {
+        name: 'App'
+    }
 </script>
 
 <style>
-  #app {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
+    .left{
+        width:20%;
+        border: 1px solid gray;
+        float: left;
+    }
 </style>
