@@ -11,8 +11,8 @@
 			<div class="container">
 				<div class="filter-nav">
 					<span class="sortby">Sort by:</span>
-					<a href="javascript:void(0)" class="default cur">Default</a>
-					<a href="javascript:void(0)" class="price" @click="sortGoods">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+					<!-- <a href="javascript:void(0)" class="default cur">Default</a> -->
+					<a href="javascript:void(0)" class="price default cur" @click="sortGoods">Price <svg class="icon icon-arrow-short" v-bind:class="{'rotate180':sortFlag}"><use xlink:href="#icon-arrow-short"></use></svg></a>
 					<a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
 				</div>
 				<div class="accessory-result">
@@ -48,7 +48,10 @@
 									</div>
 								</li>
 							</ul>
-							<div class="infinite-loading" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="240">Loading...</div>
+							<div class="infinite-loading" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="scrollHeight">
+								<span v-show="!loading">{{loadMsg}}</span>
+								<img v-show="loading" src="/static/loading/loading-spinning-bubbles.svg" alt="">
+							</div>
 						</div>
 					</div>
 				</div>
@@ -109,6 +112,9 @@
 				page: 1,
 				pageSize: 8,
 				busy: false, // 滚动插件是否启用(true:disable)
+				loading: false,
+				loadMsg: '下拉加载更多',
+				scrollHeight: 20,
 			}
 		},
 		components: {
@@ -117,11 +123,11 @@
 			NavBread
 		},
 		mounted: function () {
+			this.scrollHeight = document.documentElement.clientHeight / 2
 			this.getGoods(false)
 			
 			axios.interceptors.request.use(function (config) {
 				console.log("request init.");
-
 				return config;
 			})
 			axios.interceptors.response.use(function (response) {
@@ -131,6 +137,7 @@
 		},
 		methods: {
 			getGoods(flag) {
+				this.loading = true
 				let param = {
 					page: this.page,
 					pageSize: this.pageSize,
@@ -140,14 +147,18 @@
 				}
 				axios.get('/getproductsbypage',{params: param}).then((result) => {
 					// console.log(result)
+					this.loading = false
+					this.loadMsg = '下拉加载更多'
 					let res = result.data
 					if (res.status == 1) {
 						if (flag == true) {
 							this.goodList = this.goodList.concat(res.result.list)
 							if (res.result.count < this.pageSize) {
 								this.busy = true
+								this.loadMsg = '已加载全部'
 							} else {
 								this.busy = false
+								this.loadMsg = '下拉加载更多'
 							}
 						} else {
 							this.goodList = res.result.list
@@ -182,7 +193,7 @@
 				setTimeout(() => {
 					this.page++
 					this.getGoods(true)
-					this.busy = false
+					// this.busy = false
 				}, 500);
 			}
 		}
@@ -202,5 +213,10 @@
 		height: 100px;
 		line-height: 100px;
 		text-align: center;
+	}
+	.rotate180{
+		transform:rotate(180deg);
+		-ms-transform:rotate(180deg); /* IE 9 */
+		-webkit-transform:rotate(180deg); /* Safari and Chrome */
 	}
 </style>

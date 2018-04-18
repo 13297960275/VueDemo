@@ -139,7 +139,7 @@ function serProducts () {
 		})
 	}
 }
-// serProducts()
+serProducts()
 
 exports.getProducts = function(req, res) {
 	Product.fetch(function(err, products) {
