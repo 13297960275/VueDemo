@@ -12,7 +12,7 @@
 				<div class="filter-nav">
 					<span class="sortby">Sort by:</span>
 					<a href="javascript:void(0)" class="default cur">Default</a>
-					<a href="javascript:void(0)" class="price">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
+					<a href="javascript:void(0)" class="price" @click="sortGoods">Price <svg class="icon icon-arrow-short"><use xlink:href="#icon-arrow-short"></use></svg></a>
 					<a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
 				</div>
 				<div class="accessory-result">
@@ -48,6 +48,7 @@
 									</div>
 								</li>
 							</ul>
+							<div class="infinite-loading" v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="240">Loading...</div>
 						</div>
 					</div>
 				</div>
@@ -78,24 +79,36 @@
 					},
 					{
 						startPrice:0.00,
-						endPrice:500.00
+						endPrice:200.00
 					},
 					{
-						startPrice:500.00,
+						startPrice:200.00,
 						endPrice:1000.00
 					},
 					{
-						startPrice:1500.00,
+						startPrice:1000.00,
 						endPrice:2000.00
 					},
 					{
-						startPrice:2500.00,
+						startPrice:2000.00,
 						endPrice:3000.00
+					},
+					{
+						startPrice:3000.00,
+						endPrice:5000.00
+					},
+					{
+						startPrice:5000.00,
+						endPrice:7000.00
 					},
 				],
 				priceChecked: 0,
 				filterBy: false, // 价格选择框
-				overlayFlag: false // 遮罩层显示
+				overlayFlag: false, // 遮罩层显示
+				sortFlag: true, // 排序方式（1：升序，0：降序）
+				page: 1,
+				pageSize: 8,
+				busy: false, // 滚动插件是否启用(true:disable)
 			}
 		},
 		components: {
@@ -104,7 +117,7 @@
 			NavBread
 		},
 		mounted: function () {
-			this.getGoods()
+			this.getGoods(false)
 			
 			axios.interceptors.request.use(function (config) {
 				console.log("request init.");
@@ -117,16 +130,43 @@
 			})
 		},
 		methods: {
-			getGoods () {
-				axios.get('./static/mock/goods.json').then((result) => {
+			getGoods(flag) {
+				let param = {
+					page: this.page,
+					pageSize: this.pageSize,
+					sort: this.sortFlag ? 1 : -1,
+					gt: this.priceFilter[this.priceChecked].endPrice,
+					lt: this.priceFilter[this.priceChecked].startPrice
+				}
+				axios.get('/getproductsbypage',{params: param}).then((result) => {
+					// console.log(result)
 					let res = result.data
-					this.goodList = res.result
+					if (res.status == 1) {
+						if (flag == true) {
+							this.goodList = this.goodList.concat(res.result.list)
+							if (res.result.count < this.pageSize) {
+								this.busy = true
+							} else {
+								this.busy = false
+							}
+						} else {
+							this.goodList = res.result.list
+							this.busy = false
+						}
+					}
 				}).catch((err) => {
 					console.log(err)
 				})
 			},
+			sortGoods () {
+				this.sortFlag = !this.sortFlag
+				this.page = 1
+				this.getGoods(false)
+			},
 			setPriceFilter (index) {
 				this.priceChecked = index
+				this.page = 1
+				this.getGoods(false)
 				this.closeFilterPop()
 			},
 			showFilterPop () {
@@ -136,10 +176,31 @@
 			closeFilterPop () {
 				this.filterBy = false
 				this.overlayFlag = false
+			},
+			loadMore () {
+				this.busy = true
+				setTimeout(() => {
+					this.page++
+					this.getGoods(true)
+					this.busy = false
+				}, 500);
 			}
 		}
 	}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-
+<style>
+	.list-wrap ul::after{
+		clear: both;
+		content: '';
+		height: 0;
+		display: block;
+		visibility: hidden;
+	}
+	.infinite-loading{
+		height: 100px;
+		line-height: 100px;
+		text-align: center;
+	}
+</style>

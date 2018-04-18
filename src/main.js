@@ -4,8 +4,10 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
- 
-// or with options
+import infiniteScroll from 'vue-infinite-scroll'
+
+Vue.use(infiniteScroll)
+
 Vue.use(VueLazyload, {
   preLoad: 1.3,
   error: '/static/error.jpg',
