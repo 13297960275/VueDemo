@@ -35,14 +35,14 @@
 									<div class="pic">
 										<a href="#">
 											<!-- <img alt="" v-bind:src="'/static/'+item.prodcutImg"> -->
-											<img alt="" v-lazy="'/static/'+item.prodcutImg">
+											<img alt="" v-lazy="'/static/img/products/'+item.prodcutImg">
 										</a>
 									</div>
 									<div class="main">
 										<div class="name">{{item.productName}}</div>
 										<div class="price">{{item.prodcutPrice}}</div>
 										<div class="btn-area">
-											<a v-bind:id="item.productId" href="javascript:;" class="btn btn--m">加入购物车
+											<a v-bind:id="item._id" href="javascript:;" class="btn btn--m">加入购物车
 											</a>
 										</div>
 									</div>
@@ -164,8 +164,11 @@
 							this.goodList = res.result.list
 							this.busy = false
 						}
+					} else {
+						this.loadMsg = '加载数据失败，请刷新重试'
 					}
 				}).catch((err) => {
+					this.loadMsg = '加载数据失败，请刷新重试'
 					console.log(err)
 				})
 			},

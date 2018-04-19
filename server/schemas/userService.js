@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
+const Schema = mongoose.Schema
+const ObjectId = Schema.Types.ObjectId
+
 const bcrypt = require('bcrypt')
 const SALT_WORK_FACTOR = 10
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
 	name: {
 		unique: true,
 		type: String
@@ -12,6 +15,20 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		default: 'default.jpg'
 	},
+
+	carts: [{
+		type: ObjectId,
+		ref: 'product',
+		checked: Boolean,
+		checkedNum: Number
+	}],	
+	orders: [{
+		type: ObjectId,
+		ref: 'product',
+		checked: Boolean,
+		checkedNum: Number
+	}],	
+
 	// 0: normal user
 	// 1: letified user
 	// 2: professional user
@@ -21,6 +38,7 @@ const userSchema = new mongoose.Schema({
 		type: Number,
 		default: 0
 	},
+
 	meta: {
 		createAt: {
 			type: Date,

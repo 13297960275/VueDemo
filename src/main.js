@@ -10,7 +10,7 @@ Vue.use(infiniteScroll)
 
 Vue.use(VueLazyload, {
   preLoad: 1.3,
-  error: '/static/error.jpg',
+  error: '/static/img/error.jpg',
   loading: '/static/loading/loading-spinning-bubbles.svg',
   attempt: 1
 })

@@ -6,122 +6,98 @@ const path = require('path')
 function serProducts () {
 	let products = [
 		{
-			"productId": "10001",
 			"productName": "小米6",
 			"prodcutPrice": "2499",
 			"prodcutImg": "mi6.jpg"
 		}, {
-			"productId": "10002",
 			"productName": "小米笔记本",
 			"prodcutPrice": "3999",
 			"prodcutImg": "note.jpg"
 		}, {
-			"productId": "10003",
 			"productName": "小米MIX2S",
 			"prodcutPrice": "2799",
-			"prodcutImg": "mi6.jpg"
+			"prodcutImg": "pingheng.jpg"
 		}, {
-			"productId": "10004",
 			"productName": "华为P20 pro",
 			"prodcutPrice": "4399",
 			"prodcutImg": "1.jpg"
 		}, {
-			"productId": "10005",
 			"productName": "华为P20",
 			"prodcutPrice": "3799",
 			"prodcutImg": "2.jpg"
 		}, {
-			"productId": "10006",
 			"productName": "小米6",
 			"prodcutPrice": "1599",
 			"prodcutImg": "3.jpg"
 		}, {
-			"productId": "10007",
 			"productName": "小米6",
 			"prodcutPrice": "999",
 			"prodcutImg": "4.jpg"
 		}, {
-			"productId": "10008",
 			"productName": "小米6",
 			"prodcutPrice": "599",
 			"prodcutImg": "5.jpg"
 		}, {
-			"productId": "10001",
 			"productName": "小米6",
 			"prodcutPrice": "399",
-			"prodcutImg": "mi6.jpg"
+			"prodcutImg": "6.jpg"
 		}, {
-			"productId": "10002",
 			"productName": "小米笔记本",
 			"prodcutPrice": "3999",
-			"prodcutImg": "note.jpg"
+			"prodcutImg": "7.jpg"
 		}, {
-			"productId": "10003",
 			"productName": "小米MIX2S",
 			"prodcutPrice": "6999",
-			"prodcutImg": "mi6.jpg"
+			"prodcutImg": "8.jpg"
 		}, {
-			"productId": "10004",
 			"productName": "华为P20 pro",
 			"prodcutPrice": "4399",
-			"prodcutImg": "1.jpg"
+			"prodcutImg": "9.jpg"
 		}, {
-			"productId": "10005",
 			"productName": "华为P20",
 			"prodcutPrice": "3799",
-			"prodcutImg": "2.jpg"
+			"prodcutImg": "10.jpg"
 		}, {
-			"productId": "10006",
 			"productName": "小米6",
 			"prodcutPrice": "2199",
-			"prodcutImg": "3.jpg"
+			"prodcutImg": "13.jpg"
 		}, {
-			"productId": "10007",
 			"productName": "小米6",
 			"prodcutPrice": "1799",
-			"prodcutImg": "4.jpg"
+			"prodcutImg": "14.jpg"
 		}, {
-			"productId": "10008",
 			"productName": "小米6",
 			"prodcutPrice": "2799",
-			"prodcutImg": "5.jpg"
+			"prodcutImg": "15.jpg"
 		}, {
-			"productId": "10001",
 			"productName": "小米6",
 			"prodcutPrice": "2699",
-			"prodcutImg": "mi6.jpg"
+			"prodcutImg": "16.jpg"
 		}, {
-			"productId": "10002",
 			"productName": "小米笔记本",
 			"prodcutPrice": "4055",
-			"prodcutImg": "note.jpg"
+			"prodcutImg": "11.jpg"
 		}, {
-			"productId": "10003",
 			"productName": "小米MIX2S",
 			"prodcutPrice": "4399",
-			"prodcutImg": "mi6.jpg"
+			"prodcutImg": "12.jpg"
 		}, {
-			"productId": "10004",
 			"productName": "华为P20 pro",
 			"prodcutPrice": "4399",
-			"prodcutImg": "1.jpg"
+			"prodcutImg": "zipai.jpg"
 		}, {
-			"productId": "10005",
 			"productName": "华为P20",
 			"prodcutPrice": "3799",
-			"prodcutImg": "2.jpg"
+			"prodcutImg": "photo.jpg"
 		}, {
-			"productId": "10006",
 			"productName": "小米6",
 			"prodcutPrice": "6999",
 			"prodcutImg": "3.jpg"
 		}, {
-			"productId": "10007",
 			"productName": "小米6",
 			"prodcutPrice": "5999",
 			"prodcutImg": "4.jpg"
 		}, {
-			"productId": "10008",
 			"productName": "小米6",
 			"prodcutPrice": "299",
 			"prodcutImg": "5.jpg"
