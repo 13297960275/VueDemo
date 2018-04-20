@@ -42,7 +42,7 @@
 										<div class="name">{{item.productName}}</div>
 										<div class="price">{{item.prodcutPrice}}</div>
 										<div class="btn-area">
-											<a v-bind:id="item._id" href="javascript:;" class="btn btn--m">加入购物车
+											<a v-bind:id="item._id" href="javascript:;" @click="add2Cart(item._id)" class="btn btn--m">加入购物车
 											</a>
 										</div>
 									</div>
@@ -192,13 +192,27 @@
 				this.filterBy = false
 				this.overlayFlag = false
 			},
-			loadMore () {
+			loadMore() {
 				this.busy = true
 				setTimeout(() => {
 					this.page++
-					this.getGoods(true)
+						this.getGoods(true)
 					// this.busy = false
 				}, 500);
+			},
+			add2Cart(pId) {
+				axios.post('/goods/add2cart', {
+					userId: '5ada194e63d8761fbc4e4206',
+					prodId: pId,
+					prodNum: 2
+				}).then((resp) => {
+					let res = resp.data
+					if (res.status == 1) {
+						alert('success')
+					} else {
+						alert('failed')
+					}
+				})
 			}
 		}
 	}

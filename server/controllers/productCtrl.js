@@ -1,108 +1,107 @@
 const Product = require('../models/product')
+const User = require('../models/user')
 const _ = require('underscore')
 const fs = require('fs')
 const path = require('path')
 
-function serProducts () {
-	let products = [
-		{
-			"productName": "小米6",
-			"prodcutPrice": "2499",
-			"prodcutImg": "mi6.jpg"
-		}, {
-			"productName": "小米笔记本",
-			"prodcutPrice": "3999",
-			"prodcutImg": "note.jpg"
-		}, {
-			"productName": "小米MIX2S",
-			"prodcutPrice": "2799",
-			"prodcutImg": "pingheng.jpg"
-		}, {
-			"productName": "华为P20 pro",
-			"prodcutPrice": "4399",
-			"prodcutImg": "1.jpg"
-		}, {
-			"productName": "华为P20",
-			"prodcutPrice": "3799",
-			"prodcutImg": "2.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "1599",
-			"prodcutImg": "3.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "999",
-			"prodcutImg": "4.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "599",
-			"prodcutImg": "5.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "399",
-			"prodcutImg": "6.jpg"
-		}, {
-			"productName": "小米笔记本",
-			"prodcutPrice": "3999",
-			"prodcutImg": "7.jpg"
-		}, {
-			"productName": "小米MIX2S",
-			"prodcutPrice": "6999",
-			"prodcutImg": "8.jpg"
-		}, {
-			"productName": "华为P20 pro",
-			"prodcutPrice": "4399",
-			"prodcutImg": "9.jpg"
-		}, {
-			"productName": "华为P20",
-			"prodcutPrice": "3799",
-			"prodcutImg": "10.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "2199",
-			"prodcutImg": "13.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "1799",
-			"prodcutImg": "14.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "2799",
-			"prodcutImg": "15.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "2699",
-			"prodcutImg": "16.jpg"
-		}, {
-			"productName": "小米笔记本",
-			"prodcutPrice": "4055",
-			"prodcutImg": "11.jpg"
-		}, {
-			"productName": "小米MIX2S",
-			"prodcutPrice": "4399",
-			"prodcutImg": "12.jpg"
-		}, {
-			"productName": "华为P20 pro",
-			"prodcutPrice": "4399",
-			"prodcutImg": "zipai.jpg"
-		}, {
-			"productName": "华为P20",
-			"prodcutPrice": "3799",
-			"prodcutImg": "photo.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "6999",
-			"prodcutImg": "3.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "5999",
-			"prodcutImg": "4.jpg"
-		}, {
-			"productName": "小米6",
-			"prodcutPrice": "299",
-			"prodcutImg": "5.jpg"
-		}
-	]
+function serProducts() {
+	let products = [{
+		"productName": "小米6",
+		"prodcutPrice": "2499",
+		"prodcutImg": "mi6.jpg"
+	}, {
+		"productName": "小米笔记本",
+		"prodcutPrice": "3999",
+		"prodcutImg": "note.jpg"
+	}, {
+		"productName": "小米MIX2S",
+		"prodcutPrice": "2799",
+		"prodcutImg": "pingheng.jpg"
+	}, {
+		"productName": "华为P20 pro",
+		"prodcutPrice": "4399",
+		"prodcutImg": "1.jpg"
+	}, {
+		"productName": "华为P20",
+		"prodcutPrice": "3799",
+		"prodcutImg": "2.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "1599",
+		"prodcutImg": "3.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "999",
+		"prodcutImg": "4.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "599",
+		"prodcutImg": "5.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "399",
+		"prodcutImg": "6.jpg"
+	}, {
+		"productName": "小米笔记本",
+		"prodcutPrice": "3999",
+		"prodcutImg": "7.jpg"
+	}, {
+		"productName": "小米MIX2S",
+		"prodcutPrice": "6999",
+		"prodcutImg": "8.jpg"
+	}, {
+		"productName": "华为P20 pro",
+		"prodcutPrice": "4399",
+		"prodcutImg": "9.jpg"
+	}, {
+		"productName": "华为P20",
+		"prodcutPrice": "3799",
+		"prodcutImg": "10.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "2199",
+		"prodcutImg": "13.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "1799",
+		"prodcutImg": "14.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "2799",
+		"prodcutImg": "15.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "2699",
+		"prodcutImg": "16.jpg"
+	}, {
+		"productName": "小米笔记本",
+		"prodcutPrice": "4055",
+		"prodcutImg": "11.jpg"
+	}, {
+		"productName": "小米MIX2S",
+		"prodcutPrice": "4399",
+		"prodcutImg": "12.jpg"
+	}, {
+		"productName": "华为P20 pro",
+		"prodcutPrice": "4399",
+		"prodcutImg": "zipai.jpg"
+	}, {
+		"productName": "华为P20",
+		"prodcutPrice": "3799",
+		"prodcutImg": "photo.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "6999",
+		"prodcutImg": "3.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "5999",
+		"prodcutImg": "4.jpg"
+	}, {
+		"productName": "小米6",
+		"prodcutPrice": "299",
+		"prodcutImg": "5.jpg"
+	}]
 
 	for (let i = 0; i < products.length; i++) {
 		_product = new Product(products[i])
@@ -117,8 +116,9 @@ function serProducts () {
 }
 // serProducts()
 
-exports.getProducts = function(req, res) {
-	Product.fetch(function(err, products) {
+// 获取商品信息
+exports.getProducts = (req, res) => {
+	Product.fetch((err, products) => {
 		if (err) {
 			res.json({
 				status: 0,
@@ -137,6 +137,7 @@ exports.getProducts = function(req, res) {
 	})
 }
 
+// 带条件查询商品信息
 exports.getProductsByPage = function(req, res) {
 	let page = parseInt(req.query.page)
 	let pageSize = parseInt(req.query.pageSize)
@@ -145,7 +146,7 @@ exports.getProductsByPage = function(req, res) {
 	let params
 	if (req.query.lt !== 'All') {
 		params = {
-			prodcutPrice:{
+			prodcutPrice: {
 				$lte: parseInt(req.query.gt),
 				$gt: parseInt(req.query.lt)
 			}
@@ -155,12 +156,12 @@ exports.getProductsByPage = function(req, res) {
 	}
 
 	let skip = pageSize * (page - 1)
-	console.log(JSON.stringify(params) + '===' + page + '===' + pageSize + '====' + sort + '===' + skip)
+	// console.log(JSON.stringify(params) + '===' + page + '===' + pageSize + '====' + sort + '===' + skip)
 	let productModal = Product.find(params).skip(skip).limit(pageSize)
 	productModal.sort({
 		'prodcutPrice': sort
 	})
-	productModal.exec(function(err, products) {
+	productModal.exec((err, products) => {
 		if (err) {
 			res.json({
 				status: 0,
@@ -179,8 +180,68 @@ exports.getProductsByPage = function(req, res) {
 	})
 }
 
-exports.add2Cart = function(req, res) {
-	
+// 添加商品到购物车
+exports.add2Cart = (req, res) => {
+	console.log('add2Cart')
+	let uId = req.body.userId
+	let pId = req.body.prodId
+	let pNum = parseInt(req.body.prodNum)
+	console.log(uId + '====' + pId + '====' + pNum)
+
+	User.findById(uId, (err, user) => {
+		if (err) {
+			console.log('err1')
+			return res.json({
+				status: 0,
+				msg: '服务器错误，请稍后重试'
+			})
+		} else {
+			if (user) {
+				console.log('user1')
+				// Product.findById(pId, (err, product) => {
+				// if (err) {
+				// 	return res.json({
+				// 		status: 0,
+				// 		msg: '服务器错误，请稍后重试'
+				// 	})
+				// } else {
+				let hasProd = user.cartList.some((item) => {
+					return item.productId == pId
+				}) // 判断购物车中是否已存在当前商品
+				if (!hasProd) {
+					let prod = {
+						productId: pId,
+						checked: true,
+						checkedNum: pNum
+					}
+					user.cartList.push(prod)
+				} else {
+					let index = user.cartList.findIndex(prod => prod.productId === pId)
+					user.cartList[index].checkedNum += pNum
+				}
+				console.log('user2')
+
+				// 保存
+				user.save(function(err, user) {
+					if (err) {
+						console.log('err2')
+						return res.json({
+							status: 0,
+							msg: '服务器错误，请稍后重试'
+						})
+					} else {
+						console.log('success')
+						return res.json({
+							status: 1,
+							msg: ''
+						})
+					}
+				})
+				// }
+				// })
+			}
+		}
+	})
 }
 
 

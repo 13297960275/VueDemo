@@ -11,7 +11,7 @@ module.exports = function(app) {
 
 	// pre handler user
 	app.use(function(req, res, next) {
-		console.log('pre session==' + JSON.stringify(req.session.user))
+		// console.log('pre session==' + JSON.stringify(req.session.user))
 
 		let _user = req.session.user
 		if (_user) {
@@ -25,6 +25,9 @@ module.exports = function(app) {
 
 	// 带查询条件（跟爷、排序、金额过滤等）获取商品信息
 	app.get('/goods/getproductsbypage', productCtrl.getProductsByPage)
+
+	// 添加商品到购物车
+	app.post('/goods/add2cart', productCtrl.add2Cart)
 
 	// 用户登录
 	app.post('/users/signin', userCtrl.signIn)
