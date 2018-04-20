@@ -10,23 +10,32 @@ const _ = require('underscore')
 module.exports = function(app) {
 
 	// pre handler user
-	// app.use(function(req, res, next) {
-	// 	// console.log('pre req.path==' + req.path)
-	// 	// console.log('pre req.ip==' + req.ip)
-	// 	logCtrl.saveLogFun(req, res)
+	app.use(function(req, res, next) {
+		console.log('pre session==' + JSON.stringify(req.session.user))
 
-	// 	// console.log('pre session==' + JSON.stringify(req.session.user))
+		let _user = req.session.user
+		if (_user) {
+			app.locals.user = _user
+		}
+		return next()
+	})
 
-	// 	let _user = req.session.user
-	// 	if (_user) {
-	// 		app.locals.user = _user
-	// 	}
-	// 	return next()
-	// })
+	// 获取商品信息
+	app.get('/goods/getproducts', productCtrl.getProducts)
 
-	//  index page
-	app.get('/getproducts', productCtrl.getProducts)
+	// 带查询条件（跟爷、排序、金额过滤等）获取商品信息
+	app.get('/goods/getproductsbypage', productCtrl.getProductsByPage)
 
-	app.get('/getproductsbypage', productCtrl.getProductsByPage)
+	// 用户登录
+	app.post('/users/signin', userCtrl.signIn)
+
+	// 用户注册
+	app.post('/users/signup', userCtrl.signUp)
+
+	// 用户登出
+	app.get('/users/signout', (req, res) => {
+		delete app.locals.user;
+		userCtrl.signOut(req, res);
+	})
 
 }

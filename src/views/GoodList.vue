@@ -145,7 +145,7 @@
 					gt: this.priceFilter[this.priceChecked].endPrice,
 					lt: this.priceFilter[this.priceChecked].startPrice
 				}
-				axios.get('/getproductsbypage',{params: param}).then((result) => {
+				axios.get('/goods/getproductsbypage',{params: param}).then((result) => {
 					// console.log(result)
 					this.loading = false
 					this.loadMsg = '下拉加载更多'
@@ -168,6 +168,7 @@
 						this.loadMsg = '加载数据失败，请刷新重试'
 					}
 				}).catch((err) => {
+					this.loading = false
 					this.loadMsg = '加载数据失败，请刷新重试'
 					console.log(err)
 				})

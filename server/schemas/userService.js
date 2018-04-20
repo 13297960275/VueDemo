@@ -16,18 +16,26 @@ const userSchema = new Schema({
 		default: 'default.jpg'
 	},
 
-	carts: [{
-		type: ObjectId,
-		ref: 'product',
+	// carts: [{
+	// 	type: ObjectId,
+	// 	ref: 'product',
+	// 	checked: Boolean,
+	// 	checkedNum: Number
+	// }],	
+	// orders: [{
+	// 	type: ObjectId,
+	// 	ref: 'product',
+	// 	checked: Boolean,
+	// 	checkedNum: Number
+	// }],	
+
+	cartList: [{
+		productId: String,
 		checked: Boolean,
 		checkedNum: Number
-	}],	
-	orders: [{
-		type: ObjectId,
-		ref: 'product',
-		checked: Boolean,
-		checkedNum: Number
-	}],	
+	}],
+	orderList: Array,
+	addressList: Array,
 
 	// 0: normal user
 	// 1: letified user

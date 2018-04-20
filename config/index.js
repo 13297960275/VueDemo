@@ -11,10 +11,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/getproducts': {
+        '/goods/*': {
             target: 'http://localhost:3900'
         },
-        '/getproductsbypage': {
+        '/users/*': {
             target: 'http://localhost:3900'
         }        
     },

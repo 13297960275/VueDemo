@@ -115,7 +115,7 @@ function serProducts () {
 		})
 	}
 }
-serProducts()
+// serProducts()
 
 exports.getProducts = function(req, res) {
 	Product.fetch(function(err, products) {
@@ -177,6 +177,10 @@ exports.getProductsByPage = function(req, res) {
 			})
 		}
 	})
+}
+
+exports.add2Cart = function(req, res) {
+	
 }
 
 

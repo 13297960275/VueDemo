@@ -18,28 +18,12 @@ exports.getUsers = function(req, res) {
 	})
 }
 
-//  admin user list page
-exports.signIn = function(req, res) {
-	res.render('user/signIn', {
-		title: 'user signIn'
-	})
-}
-
-//  admin user list page
-exports.signUp = function(req, res) {
-	res.render('user/signUp', {
-		title: 'user signUp'
-	})
-}
-
-/*user module fun*/
-
 /* upload avatar */
 exports.uploadAvatar = function(req, res, next) {
 	//接收前台POST过来的base64
 	let imgData = req.body.imgData
 	//过滤data:URL
-	let base64Data = imgData.replace(/^data:image\/\w+base64,/, "")
+	let base64Data = imgData.replace(/^data:image\/\w+base64,/, '')
 	let dataBuffer = new Buffer(base64Data, 'base64')
 	let timeStamp = Date.now()
 	let avatar = timeStamp + '.png'
@@ -57,87 +41,107 @@ exports.uploadAvatar = function(req, res, next) {
 	})
 }
 
-// user sign up fun
-exports.signUpFun = function(req, res) {
-	let _user = req.body.user
-	// let _user = req.param('user')
-	// let _user = req.params.user
-	// console.log('signup:_user====' + _user)
-	// /user/signup/111?userid=111
-	// let _userid = req.query.userid
-	// post {userid:112}
-	// let _userid = req.body.userid
-
-	// let user = new User({
-	// 	name: _user.name,
-	// 	password: _user.password
-	// })
+// user sign up
+exports.signUp = function(req, res) {
+	let _user = {
+		name: req.body.userName,
+		password: req.body.userPwd
+	}
 
 	User.find({
 		name: _user.name
 	}, function(err, user) {
 		if (err) {
-			console.log(err)
+			return res.json({
+				status: 0,
+				msg: '服务器错误，请稍后重试'
+			})
 		}
 
-		// if (JSON.stringify(user) !== '{}' ) {
-		if (user.length > 0) {
-			// console.log('find:!user====' + JSON.stringify(user))
-			// 已有账号，重定向到登录页
-			return res.redirect('/admin/user/signin')
+		if (user.length > 0) { // 已有账号
+			return res.json({
+				status: 0,
+				msg: '用户名已存在'
+			})
 		} else {
-			// console.log('find:user====' + JSON.stringify(user))
 			user = new User(_user)
 			user.save(function(err, user) {
 				if (err) {
-					console.log(err)
+					return res.json({
+						status: 0,
+						msg: '服务器错误，请稍后重试'
+					})
 				} else {
-					// console.log('save:user====' + user.name)
 					req.session.user = user
 
-					res.redirect('/')
+					return res.json({
+						status: 1,
+						msg: ''
+					})
 				}
 			})
 		}
 	})
 }
 
-// user sign up
-exports.signInFun = function(req, res) {
-	let _user = req.body.user
-	// console.log('signin:_user====' + _user.name)
+// user sign in
+exports.signIn = function(req, res) {
+	let _user = {
+		name: req.body.userName,
+		password: req.body.userPwd
+	}
 
 	User.findOne({
 		name: _user.name
 	}, function(err, user) {
 		if (err) {
-			console.log(err)
+			return res.json({
+				status: 0,
+				msg: '服务器错误，请稍后重试'
+			})
 		}
 
-		if (!user) {
-			// console.log('find:user====' + user)
-			// 没有账号，重定向到注册页
-			return res.redirect('/admin/user/signup')
+		if (!user) { // 没有账号
+			return res.json({
+				status: 0,
+				msg: '用户名不存在'
+			})
 		}
 
+		// 密码比对
 		user.comparePassword(_user.password, function(err, isMatch) {
 			if (err) {
-				console.log(err)
+				return res.json({
+					status: 0,
+					msg: '服务器错误，请稍后重试'
+				})
 			}
 
-			if (isMatch) {
-				// console.log('password is matched')
-
+			if (isMatch) { // 密码匹配
+				// 将user信息通过session写到cookie
 				req.session.user = user
-				// console.log('signInFun session==' + JSON.stringify(req.session.user))
 
-				return res.redirect('/')
-			} else {
-				// console.log('password is not matched')
-				// 密码不匹配，重定向到登录页
-				res.redirect('/admin/user/signin')
+				return res.json({
+					status: 1,
+					msg: ''
+				})
+			} else { // 密码不匹配
+				res.json({
+					status: 0,
+					msg: '密码不正确'
+				})
 			}
 		})
+	})
+}
+
+//  admin user sign out
+exports.signOut = function(req, res) {
+	delete req.session.user
+
+	return res.json({
+		status: 1,
+		msg: ''
 	})
 }
 
@@ -158,14 +162,6 @@ exports.delUserFun = function(req, res) {
 			}
 		})
 	}
-}
-
-//  admin user signout fun
-exports.signOutFun = function(req, res) {
-	delete req.session.user
-	// delete app.locals.user
-
-	res.redirect('/')
 }
 
 // permission control middleware
