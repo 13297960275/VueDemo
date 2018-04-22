@@ -41,6 +41,21 @@ exports.uploadAvatar = function(req, res, next) {
 	})
 }
 
+// check user sign in
+exports.checkLogin = function(req, res) {
+	if (req.session.user) {
+		return res.json({
+			status: 1,
+			result: req.session.user.name
+		})
+	} else {
+		return res.json({
+			status: 0,
+			msg: '未登录，请登陆后重试'
+		})
+	}
+}
+
 // user sign up
 exports.signUp = function(req, res) {
 	let _user = {
@@ -172,10 +187,14 @@ exports.userSignInRequired = function(req, res, next) {
 	if (!user) {
 		// 用户未登录
 		// console.log('userSignInRequired session.user == ' + JSON.stringify(req.session.user))
-		return res.redirect('/admin/user/signin')
+		return res.json({
+			status: 1001,
+			msg: '未登录，请登陆后重试',
+			result: ''
+		})
+	} else {
+		next()
 	}
-
-	next()
 }
 
 // 管理员角色验证
@@ -184,8 +203,12 @@ exports.userAdminRequired = function(req, res, next) {
 	if (user.role <= 10) {
 		// 普通用户
 		// console.log('userAdminRequired session.user == ' + JSON.stringify(req.session.user))
-		return res.redirect('/admin/user/signin')
+		return res.json({
+			status: 1002,
+			msg: '非管理员账号，拒绝访问',
+			result: ''
+		})
+	} else {
+		next()
 	}
-
-	next()
 }

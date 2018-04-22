@@ -69,7 +69,7 @@
 				</div>
 			</div>
 
-			<div class="md-overlay" v-show="loginFlag" @click="closeLoginPop"></div>
+			<div class="md-overlay" v-if="loginFlag" @click="closeLoginPop"></div>
 		</header>
 	</div>
 </template>
@@ -84,7 +84,7 @@
 				userName: '', // 登录名
 				userPwd: '', // 密码
 				loginFlag: false, // 是否显示登录框
-				errorFlag: false,// 是否显示登录错误信息
+				errorFlag: false, // 是否显示登录错误信息
 				formErrorMsg: '', // 登录错误信息
 				isLogin: true, // 登录or注册
 				formTitle: '登录', // 标题文字
@@ -95,7 +95,24 @@
 		components: {
 			// inportComp
 		},
+		mounted() {
+			this.checkLogin()
+		},
 		methods: {
+			checkLogin() {
+				axios.get('/users/checklogin').then((resp) => {
+					let res = resp.data
+					if (res.status == 1) {
+						this.loginName = res.result
+					} else {
+						this.loginName = ''
+					}
+				}).catch((err) => {
+					console.log(err)
+					this.errorFlag = true
+					this.formErrorMsg = '服务器错误，请稍后重试'
+				})
+			},
 			closeLoginPop() {
 				this.loginFlag = false
 			},
@@ -149,13 +166,13 @@
 						this.loginFlag = false
 						this.loginName = ''
 					} else {
-						
+
 					}
 				}).catch((err) => {
 					console.log(err)
 					this.errorFlag = true
 					this.formErrorMsg = '服务器错误，请稍后重试'
-				})				
+				})
 			}
 		}
 	}

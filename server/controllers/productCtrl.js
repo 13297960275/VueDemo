@@ -186,18 +186,18 @@ exports.add2Cart = (req, res) => {
 	let uId = req.body.userId
 	let pId = req.body.prodId
 	let pNum = parseInt(req.body.prodNum)
-	console.log(uId + '====' + pId + '====' + pNum)
+	// console.log(uId + '====' + pId + '====' + pNum)
 
 	User.findById(uId, (err, user) => {
 		if (err) {
-			console.log('err1')
+			// console.log('err1')
 			return res.json({
 				status: 0,
 				msg: '服务器错误，请稍后重试'
 			})
 		} else {
 			if (user) {
-				console.log('user1')
+				// console.log('user1')
 				// Product.findById(pId, (err, product) => {
 				// if (err) {
 				// 	return res.json({
@@ -219,18 +219,18 @@ exports.add2Cart = (req, res) => {
 					let index = user.cartList.findIndex(prod => prod.productId === pId)
 					user.cartList[index].checkedNum += pNum
 				}
-				console.log('user2')
+				// console.log('user2')
 
 				// 保存
 				user.save(function(err, user) {
 					if (err) {
-						console.log('err2')
+						// console.log('err2')
 						return res.json({
 							status: 0,
 							msg: '服务器错误，请稍后重试'
 						})
 					} else {
-						console.log('success')
+						// console.log('success')
 						return res.json({
 							status: 1,
 							msg: ''

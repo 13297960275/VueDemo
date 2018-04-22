@@ -27,10 +27,13 @@ module.exports = function(app) {
 	app.get('/goods/getproductsbypage', productCtrl.getProductsByPage)
 
 	// 添加商品到购物车
-	app.post('/goods/add2cart', productCtrl.add2Cart)
+	app.post('/goods/add2cart', userCtrl.userSignInRequired, productCtrl.add2Cart)
 
 	// 用户登录
 	app.post('/users/signin', userCtrl.signIn)
+
+	// 检查用户是否登录
+	app.get('/users/checklogin', userCtrl.checkLogin)
 
 	// 用户注册
 	app.post('/users/signup', userCtrl.signUp)
