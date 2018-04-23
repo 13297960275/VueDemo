@@ -5,107 +5,109 @@ const fs = require('fs')
 const path = require('path')
 
 function serProducts() {
-	let products = [{
-		"productName": "小米6",
-		"prodcutPrice": "2499",
-		"prodcutImg": "mi6.jpg"
-	}, {
-		"productName": "小米笔记本",
-		"prodcutPrice": "3999",
-		"prodcutImg": "note.jpg"
-	}, {
-		"productName": "小米MIX2S",
-		"prodcutPrice": "2799",
-		"prodcutImg": "pingheng.jpg"
-	}, {
-		"productName": "华为P20 pro",
-		"prodcutPrice": "4399",
-		"prodcutImg": "1.jpg"
-	}, {
-		"productName": "华为P20",
-		"prodcutPrice": "3799",
-		"prodcutImg": "2.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "1599",
-		"prodcutImg": "3.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "999",
-		"prodcutImg": "4.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "599",
-		"prodcutImg": "5.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "399",
-		"prodcutImg": "6.jpg"
-	}, {
-		"productName": "小米笔记本",
-		"prodcutPrice": "3999",
-		"prodcutImg": "7.jpg"
-	}, {
-		"productName": "小米MIX2S",
-		"prodcutPrice": "6999",
-		"prodcutImg": "8.jpg"
-	}, {
-		"productName": "华为P20 pro",
-		"prodcutPrice": "4399",
-		"prodcutImg": "9.jpg"
-	}, {
-		"productName": "华为P20",
-		"prodcutPrice": "3799",
-		"prodcutImg": "10.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "2199",
-		"prodcutImg": "13.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "1799",
-		"prodcutImg": "14.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "2799",
-		"prodcutImg": "15.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "2699",
-		"prodcutImg": "16.jpg"
-	}, {
-		"productName": "小米笔记本",
-		"prodcutPrice": "4055",
-		"prodcutImg": "11.jpg"
-	}, {
-		"productName": "小米MIX2S",
-		"prodcutPrice": "4399",
-		"prodcutImg": "12.jpg"
-	}, {
-		"productName": "华为P20 pro",
-		"prodcutPrice": "4399",
-		"prodcutImg": "zipai.jpg"
-	}, {
-		"productName": "华为P20",
-		"prodcutPrice": "3799",
-		"prodcutImg": "photo.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "6999",
-		"prodcutImg": "3.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "5999",
-		"prodcutImg": "4.jpg"
-	}, {
-		"productName": "小米6",
-		"prodcutPrice": "299",
-		"prodcutImg": "5.jpg"
-	}]
+	let products = [
+		{
+			"productName": "小米6",
+			"prodcutPrice": "2499",
+			"prodcutImg": "mi6.jpg"
+		}, {
+			"productName": "小米笔记本",
+			"prodcutPrice": "3999",
+			"prodcutImg": "note.jpg"
+		}, {
+			"productName": "小米MIX2S",
+			"prodcutPrice": "2799",
+			"prodcutImg": "pingheng.jpg"
+		}, {
+			"productName": "华为P20 pro",
+			"prodcutPrice": "4399",
+			"prodcutImg": "1.jpg"
+		}, {
+			"productName": "华为P20",
+			"prodcutPrice": "3799",
+			"prodcutImg": "2.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "1599",
+			"prodcutImg": "3.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "999",
+			"prodcutImg": "4.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "599",
+			"prodcutImg": "5.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "399",
+			"prodcutImg": "6.jpg"
+		}, {
+			"productName": "小米笔记本",
+			"prodcutPrice": "3999",
+			"prodcutImg": "7.jpg"
+		}, {
+			"productName": "小米MIX2S",
+			"prodcutPrice": "6999",
+			"prodcutImg": "8.jpg"
+		}, {
+			"productName": "华为P20 pro",
+			"prodcutPrice": "4399",
+			"prodcutImg": "9.jpg"
+		}, {
+			"productName": "华为P20",
+			"prodcutPrice": "3799",
+			"prodcutImg": "10.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "2199",
+			"prodcutImg": "13.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "1799",
+			"prodcutImg": "14.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "2799",
+			"prodcutImg": "15.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "2699",
+			"prodcutImg": "16.jpg"
+		}, {
+			"productName": "小米笔记本",
+			"prodcutPrice": "4055",
+			"prodcutImg": "11.jpg"
+		}, {
+			"productName": "小米MIX2S",
+			"prodcutPrice": "4399",
+			"prodcutImg": "12.jpg"
+		}, {
+			"productName": "华为P20 pro",
+			"prodcutPrice": "4399",
+			"prodcutImg": "zipai.jpg"
+		}, {
+			"productName": "华为P20",
+			"prodcutPrice": "3799",
+			"prodcutImg": "photo.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "6999",
+			"prodcutImg": "3.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "5999",
+			"prodcutImg": "4.jpg"
+		}, {
+			"productName": "小米6",
+			"prodcutPrice": "299",
+			"prodcutImg": "5.jpg"
+		}
+	]
 
 	for (let i = 0; i < products.length; i++) {
 		_product = new Product(products[i])
-		_product.save(function(err, user) {
+		_product.save((err, user) => {
 			if (err) {
 				console.log(err)
 			} else {
@@ -138,7 +140,7 @@ exports.getProducts = (req, res) => {
 }
 
 // 带条件查询商品信息
-exports.getProductsByPage = function(req, res) {
+exports.getProductsByPage = (req, res) => {
 	let page = parseInt(req.query.page)
 	let pageSize = parseInt(req.query.pageSize)
 	let sort = req.query.sort
@@ -183,9 +185,10 @@ exports.getProductsByPage = function(req, res) {
 // 添加商品到购物车
 exports.add2Cart = (req, res) => {
 	console.log('add2Cart')
-	let uId = req.body.userId
+	let uId = req.session.user._id
 	let pId = req.body.prodId
-	let pNum = parseInt(req.body.prodNum)
+	let pNum = 1
+	// let pNum = parseInt(req.body.prodNum)
 	// console.log(uId + '====' + pId + '====' + pNum)
 
 	User.findById(uId, (err, user) => {
@@ -222,7 +225,7 @@ exports.add2Cart = (req, res) => {
 				// console.log('user2')
 
 				// 保存
-				user.save(function(err, user) {
+				user.save((err, user) => {
 					if (err) {
 						// console.log('err2')
 						return res.json({
@@ -246,8 +249,8 @@ exports.add2Cart = (req, res) => {
 
 
 //  admin add product page
-exports.addproduct = function(req, res) {
-	Category.find({}, function(err, categories) {
+exports.addproduct = (req, res) => {
+	Category.find({}, (err, categories) => {
 		res.render('product/product', {
 			title: 'admin product',
 			categories: categories,
@@ -268,11 +271,11 @@ exports.addproduct = function(req, res) {
 /*product module fun*/
 
 //  admin update product func
-exports.editproductFun = function(req, res) {
+exports.editproductFun = (req, res) => {
 	let id = req.params.id
 
 	if (id) {
-		product.findById(id, function(err, product) {
+		product.findById(id, (err, product) => {
 
 			res.render('product/detail', {
 				title: 'product update',
@@ -283,7 +286,7 @@ exports.editproductFun = function(req, res) {
 }
 
 /* upload poster */
-exports.uploadPoster = function(req, res, next) {
+exports.uploadPoster = (req, res, next) => {
 	// console.log(req.body, req.files)
 	// console.log(req.files)
 	// return
@@ -293,14 +296,14 @@ exports.uploadPoster = function(req, res, next) {
 	// console.log(req.files)
 	// console.log(posterData, filePath, originalFilename)
 	if (originalFilename) {
-		fs.readFile(filePath, function(err, data) {
+		fs.readFile(filePath, (err, data) => {
 			let timeStamp = Date.now()
 			let type = posterData.type.split('/')[1]
 			let poster = timeStamp + '.' + type
 			let newPath = path.join(__dirname, '../../', '/public/upload/poster/' + poster)
 			// console.log(newPath)
 
-			fs.writeFile(newPath, data, function(err) {
+			fs.writeFile(newPath, data, (err) => {
 				// console.log('data:' + data)
 				req.poster = poster
 				next()
@@ -312,7 +315,7 @@ exports.uploadPoster = function(req, res, next) {
 }
 
 // admin add product fun
-exports.addproductFun = function(req, res) {
+exports.addproductFun = (req, res) => {
 	let id = req.body.product._id
 	let productObj = req.body.product
 	let _product
@@ -324,7 +327,7 @@ exports.addproductFun = function(req, res) {
 	if (id) { // 有product id则编辑，没有则新增
 		// console.log("1")
 
-		product.findById(id, function(err, product) {
+		product.findById(id, (err, product) => {
 			if (err) {
 				console.log(err)
 			}
@@ -337,7 +340,7 @@ exports.addproductFun = function(req, res) {
 
 			_product = _.extend(product, productObj)
 			// console.log(_product)
-			_product.save(function(err, product) {
+			_product.save((err, product) => {
 				if (err) {
 					console.log(err)
 				}
@@ -354,17 +357,17 @@ exports.addproductFun = function(req, res) {
 		let categoryIntro = productObj.categoryIntro
 
 		// console.log(_product)
-		_product.save(function(err, product) {
+		_product.save((err, product) => {
 			if (err) {
 				console.log(err)
 			}
 			// console.log(product)
 
 			if (categoryId) {
-				Category.findById(categoryId, function(err, category) {
+				Category.findById(categoryId, (err, category) => {
 
 					category.products.push(product._id)
-					category.save(function(err, category) {
+					category.save((err, category) => {
 						// if (err) {
 						// 	console.log(err)
 						// }
@@ -379,7 +382,7 @@ exports.addproductFun = function(req, res) {
 					products: product._id
 				})
 				// console.log(category)
-				category.save(function(err, category) {
+				category.save((err, category) => {
 					// if (err) {
 					// 	console.log(err)
 					// }
@@ -392,13 +395,13 @@ exports.addproductFun = function(req, res) {
 }
 
 //  admin delete product fun
-exports.delproductFun = function(req, res) {
+exports.delproductFun = (req, res) => {
 	let id = req.query.id
 	// console.log(id)
 	if (id) {
 		product.remove({
 			_id: id
-		}, function(err, product) {
+		}, (err, product) => {
 			if (err) {
 				console.log(err)
 			} else {

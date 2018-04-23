@@ -1,12 +1,13 @@
 const User = require('../models/user')
+const Product = require('../models/product')
 const fs = require('fs')
 const path = require('path')
 
 /*user module page*/
 
 //  admin user list page
-exports.getUsers = function(req, res) {
-	User.fetch(function(err, users) {
+exports.getUsers = (req, res) => {
+	User.fetch((err, users) => {
 		if (err) {
 			console.log(err)
 		}
@@ -19,7 +20,7 @@ exports.getUsers = function(req, res) {
 }
 
 /* upload avatar */
-exports.uploadAvatar = function(req, res, next) {
+exports.uploadAvatar = (req, res, next) => {
 	//接收前台POST过来的base64
 	let imgData = req.body.imgData
 	//过滤data:URL
@@ -29,7 +30,7 @@ exports.uploadAvatar = function(req, res, next) {
 	let avatar = timeStamp + '.png'
 	let newPath = path.join(__dirname, '../../', '/public/upload/avatar/' + avatar)
 	// console.log(dataBuffer)
-	fs.writeFile(newPath, dataBuffer, function(err) {
+	fs.writeFile(newPath, dataBuffer, (err) => {
 		if (err) {
 			console.log(err)
 		} else {
@@ -42,7 +43,7 @@ exports.uploadAvatar = function(req, res, next) {
 }
 
 // check user sign in
-exports.checkLogin = function(req, res) {
+exports.checkLogin = (req, res) => {
 	if (req.session.user) {
 		return res.json({
 			status: 1,
@@ -57,16 +58,22 @@ exports.checkLogin = function(req, res) {
 }
 
 // user sign up
-exports.signUp = function(req, res) {
+exports.signUp = (req, res) => {
 	let _user = {
 		name: req.body.userName,
 		password: req.body.userPwd
 	}
 
+	console.log('_user:' + JSON.stringify(_user))
+
 	User.find({
 		name: _user.name
-	}, function(err, user) {
+	}, (err, user) => {
+		console.log(JSON.stringify('user' + user))
+
 		if (err) {
+			console.log(JSON.stringify('err1' + err))
+
 			return res.json({
 				status: 0,
 				msg: '服务器错误，请稍后重试'
@@ -79,15 +86,17 @@ exports.signUp = function(req, res) {
 				msg: '用户名已存在'
 			})
 		} else {
-			user = new User(_user)
-			user.save(function(err, user) {
+			userObj = new User(_user)
+			userObj.save((err, user2) => {
+				console.log(JSON.stringify('user2' + user2))
 				if (err) {
+					console.log(JSON.stringify('err2' + err))
 					return res.json({
 						status: 0,
 						msg: '服务器错误，请稍后重试'
 					})
 				} else {
-					req.session.user = user
+					req.session.user = user2
 
 					return res.json({
 						status: 1,
@@ -100,7 +109,7 @@ exports.signUp = function(req, res) {
 }
 
 // user sign in
-exports.signIn = function(req, res) {
+exports.signIn = (req, res) => {
 	let _user = {
 		name: req.body.userName,
 		password: req.body.userPwd
@@ -108,7 +117,7 @@ exports.signIn = function(req, res) {
 
 	User.findOne({
 		name: _user.name
-	}, function(err, user) {
+	}, (err, user) => {
 		if (err) {
 			return res.json({
 				status: 0,
@@ -124,7 +133,7 @@ exports.signIn = function(req, res) {
 		}
 
 		// 密码比对
-		user.comparePassword(_user.password, function(err, isMatch) {
+		user.comparePassword(_user.password, (err, isMatch) => {
 			if (err) {
 				return res.json({
 					status: 0,
@@ -151,7 +160,7 @@ exports.signIn = function(req, res) {
 }
 
 //  admin user sign out
-exports.signOut = function(req, res) {
+exports.signOut = (req, res) => {
 	delete req.session.user
 
 	return res.json({
@@ -160,14 +169,65 @@ exports.signOut = function(req, res) {
 	})
 }
 
+exports.getCart = (req, res) => {
+	let uId = req.session.user._id
+
+	User.findById(uId, async (err, user) => {
+		if (err) {
+			// console.log('err1')
+			return res.json({
+				status: 0,
+				msg: '服务器错误，请稍后重试'
+			})
+		} else {
+			console.log('pr')
+			// new Promise((resolve, reject) => {
+			// 	for (let index = 0; index < user.cartList.length; index++) {
+			// 		Product.findById(user.cartList[index].productId, (err, prod) => {
+			// 			if (err) {
+			// 				reject()
+			// 			} else {
+			// 				user.cartList[index].product = prod
+			// 				resolve()
+			// 			}
+			// 		})
+			// 	}
+			// });
+			let carts = user.cartList
+			for (let index = 0; index < user.cartList.length; index++) {
+				await Product.findById(user.cartList[index].productId, (err, prod) => {
+					if (err) {
+						return res.json({
+							status: 0,
+							msg: '服务器错误，请稍后重试'
+						})
+					} else {
+						carts[index].productName = prod.productName
+						carts[index].prodcutPrice = prod.prodcutPrice
+						carts[index].prodcutImg = prod.prodcutImg
+						console.log(index)
+					}
+				})
+			}
+			console.log('prod')
+
+			return res.json({
+				status: 1,
+				msg: carts
+			})
+
+		}
+	})
+}
+
 //  admin delete user fun
-exports.delUserFun = function(req, res) {
+exports.delUserFun = (req, res) => {
 	let id = req.query.id
 	// console.log(id)
 	if (id) {
 		User.remove({
 			_id: id
-		}, function(err, user) {
+		}, (err, user) => {
 			if (err) {
 				console.log(err)
 			} else {
@@ -182,7 +242,7 @@ exports.delUserFun = function(req, res) {
 // permission control middleware
 
 // 登录验证
-exports.userSignInRequired = function(req, res, next) {
+exports.userSignInRequired = (req, res, next) => {
 	let user = req.session.user
 	if (!user) {
 		// 用户未登录
@@ -198,7 +258,7 @@ exports.userSignInRequired = function(req, res, next) {
 }
 
 // 管理员角色验证
-exports.userAdminRequired = function(req, res, next) {
+exports.userAdminRequired = (req, res, next) => {
 	let user = req.session.user
 	if (user.role <= 10) {
 		// 普通用户

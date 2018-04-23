@@ -15,15 +15,15 @@ const dbUrl = 'mongodb://localhost/mall'
 
 mongoose.connect(dbUrl)
 // 连接成功
-mongoose.connection.on('connected', function() {
+mongoose.connection.on('connected', () => {
 	console.log('Mongoose connection open to ' + dbUrl)
 })
 // 连接异常
-mongoose.connection.on('error', function(err) {
+mongoose.connection.on('error', (err) => {
 	console.log('Mongoose connection error: ' + err)
 })
 // 连接断开
-mongoose.connection.on('disconnected', function() {
+mongoose.connection.on('disconnected', () => {
 	console.log('Mongoose connection disconnected')
 })
 
@@ -66,12 +66,12 @@ app.use(serveStatic(path.join(__dirname, 'static')))
 // app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
-// app.use(function(req, res, next) {
+// app.use((req, res, next) => {
 //   next(createError(404));
 // });
 
 // // error handler
-// app.use(function(err, req, res, next) {
+// app.use((err, req, res, next) => {
 //   // set locals, only providing error in development
 //   res.locals.message = err.message;
 //   res.locals.error = req.app.get('env') === 'development' ? err : {};

@@ -12,6 +12,7 @@ import SubTitle from '@/demoViews/SubTitle'
 // demo end */
 
 import GoodList from './../views/GoodList'
+import Cart from './../views/Cart'
 
 Vue.use(Router)
 
@@ -103,9 +104,16 @@ export default new Router({
 
 	// demo end */
 
-	routes: [{
-		path: '/',
-		name: 'GoodList',
-		component: GoodList
-	}]
+	routes: [
+		{
+			path: '/',
+			name: 'GoodList',
+			component: GoodList
+		},
+		{
+			path: '/cart',
+			name: 'cart',
+			component: Cart
+		}
+	]
 })
