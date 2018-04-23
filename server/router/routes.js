@@ -7,10 +7,10 @@ const multipart = multiparty()
 
 const _ = require('underscore')
 
-module.exports = function(app) {
+module.exports = (app) => {
 
 	// pre handler user
-	app.use(function(req, res, next) {
+	app.use((req, res, next) => {
 		// console.log('pre session==' + JSON.stringify(req.session.user))
 
 		let _user = req.session.user
@@ -28,6 +28,9 @@ module.exports = function(app) {
 
 	// 添加商品到购物车
 	app.post('/goods/add2cart', userCtrl.userSignInRequired, productCtrl.add2Cart)
+
+	// 查询用户购物车数据
+	app.get('/users/getcart', userCtrl.userSignInRequired, userCtrl.getCart)
 
 	// 用户登录
 	app.post('/users/signin', userCtrl.signIn)
