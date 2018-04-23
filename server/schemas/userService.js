@@ -30,6 +30,8 @@ const userSchema = new Schema({
 	// }],	
 
 	cartList: [{
+		type: ObjectId,
+		ref: 'product',
 		productId: String,
 		checked: Boolean,
 		checkedNum: Number

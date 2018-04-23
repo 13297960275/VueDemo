@@ -60,7 +60,7 @@
 		</div>
 	</div>
 
-	<!-- <pop-modal v-bind:modalShow="modalShow" v-bind:formTitle="formTitle" v-on:close="closeModal">
+	<pop-modal v-bind:modalShow="modalShow" v-bind:formTitle="formTitle" v-on:close="closeModal">
 		<div slot="formContent">
 			<svg v-if="isStatusOK" class="icon-status-ok">
 				<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
@@ -72,7 +72,7 @@
 			<a href="javascript:;" v-if="isStatusOK" class="btn btn--m" @click="closeModal">继续购物</a>
 			<router-link v-if="isStatusOK" class="btn btn--m" to="/cart">查看购物车</router-link>
 		</div>
-	</pop-modal> -->
+	</pop-modal>
 
 	<div class="md-overlay" v-show="overlayFlag" @click="closeFilterPop"></div>
 
@@ -84,7 +84,7 @@
 	import NavHeader from '@/components/NavHeader'
 	import NavFooter from '@/components/NavFooter'
 	import NavBread from '@/components/NavBread'
-	// import PopModal from '@/components/PopModal'
+	import PopModal from '@/components/PopModal'
 
 	import axios from 'axios'
 
@@ -136,7 +136,7 @@
 		NavHeader,
 		NavFooter,
 		NavBread,
-		// PopModal
+		PopModal
 	},
 	mounted() {
 		this.scrollHeight = document.documentElement.clientHeight / 2

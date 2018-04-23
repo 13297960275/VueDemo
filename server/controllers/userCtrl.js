@@ -169,10 +169,22 @@ exports.signOut = (req, res) => {
 	})
 }
 
+function getProductById(id) {
+	return new Promise((resolve, reject) => {
+		Product.findById(id, (err, prod) => {
+			if (err) {
+				reject(err)
+			} else {
+				resolve(prod)
+			}
+		})
+	})
+}
+
 exports.getCart = (req, res) => {
 	let uId = req.session.user._id
 
-	User.findById(uId, async (err, user) => {
+	User.findById(uId, (err, user) => {
 		if (err) {
 			// console.log('err1')
 			return res.json({
@@ -181,33 +193,24 @@ exports.getCart = (req, res) => {
 			})
 		} else {
 			console.log('pr')
-			// new Promise((resolve, reject) => {
-			// 	for (let index = 0; index < user.cartList.length; index++) {
-			// 		Product.findById(user.cartList[index].productId, (err, prod) => {
-			// 			if (err) {
-			// 				reject()
-			// 			} else {
-			// 				user.cartList[index].product = prod
-			// 				resolve()
-			// 			}
-			// 		})
-			// 	}
-			// });
 			let carts = user.cartList
 			for (let index = 0; index < user.cartList.length; index++) {
-				await Product.findById(user.cartList[index].productId, (err, prod) => {
-					if (err) {
-						return res.json({
-							status: 0,
-							msg: '服务器错误，请稍后重试'
-						})
-					} else {
-						carts[index].productName = prod.productName
-						carts[index].prodcutPrice = prod.prodcutPrice
-						carts[index].prodcutImg = prod.prodcutImg
-						console.log(index)
-					}
+				getProductById(user.cartList[index].productId).then((result) => {
+					carts[index].product = result
 				})
+				// Product.findById(user.cartList[index].productId, (err, prod) => {
+				// 	if (err) {
+				// 		return res.json({
+				// 			status: 0,
+				// 			msg: '服务器错误，请稍后重试'
+				// 		})
+				// 	} else {
+				// 		carts[index].productName = prod.productName
+				// 		carts[index].prodcutPrice = prod.prodcutPrice
+				// 		carts[index].prodcutImg = prod.prodcutImg
+				// 		console.log(index)
+				// 	}
+				// })
 			}
 			console.log('prod')
 
