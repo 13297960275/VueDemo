@@ -720,10 +720,10 @@ a:hover {
 }
 
 .select-self-area .select-ipt {
-  display: block;
+  display: inline;
   min-width: 56px;
   height: 100%;
-  padding: 0 25px 0 10px;
+  /*padding: 0 25px 0 10px;*/
   border: 0;
   color: #605F5F;
   text-align: left;

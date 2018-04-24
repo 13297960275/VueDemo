@@ -3,10 +3,10 @@ const Schema = mongoose.Schema
 const ObjectId = Schema.Types.ObjectId
 
 const productSchema = new Schema({
-	productId: String,
+	// productId: String,
 	productName: String,
-	prodcutPrice: Number,
-	prodcutImg: String,
+	productPrice: Number,
+	productImg: String,
 	meta: {
 		createAt: {
 			type: Date,

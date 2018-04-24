@@ -36,13 +36,13 @@
 							<li v-for="(item,index) in goodList">
 								<div class="pic">
 									<a href="#">
-										<!-- <img alt="" v-bind:src="'/static/'+item.prodcutImg"> -->
-										<img alt="" v-lazy="'/static/img/products/'+item.prodcutImg">
+										<!-- <img alt="" v-bind:src="'/static/'+item.productImg"> -->
+										<img alt="" v-lazy="'/static/img/products/'+item.productImg">
 									</a>
 								</div>
 								<div class="main">
 									<div class="name">{{item.productName}}</div>
-									<div class="price">{{item.prodcutPrice}}</div>
+									<div class="price">{{item.productPrice}}</div>
 									<div class="btn-area">
 										<a v-bind:id="item._id" href="javascript:;" @click="add2Cart(item._id)" class="btn btn--m">加入购物车
 										</a>

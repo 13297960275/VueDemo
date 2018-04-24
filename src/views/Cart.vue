@@ -34,28 +34,28 @@
 										</a>
 									</div>
 									<div class="cart-item-pic">
-										<img src="/static/img/1.jpg">
+										<img v-bind:src="'/static/img/products/'+item.product.productImg">
 									</div>
 									<div class="cart-item-title">
-										<div class="item-name">XX</div>
+										<div class="item-name">{{item.product.productName}}</div>
 									</div>
 								</div>
 								<div class="cart-tab-2">
-									<div class="item-price">1000</div>
+									<div class="item-price">{{item.product.productPrice}}</div>
 								</div>
 								<div class="cart-tab-3">
 									<div class="item-quantity">
 										<div class="select-self select-self-open">
 											<div class="select-self-area">
 												<a class="input-sub">-</a>
-												<span class="select-ipt">10</span>
+												<span class="select-ipt">{{item.checkedNum}}</span>
 												<a class="input-add">+</a>
 											</div>
 										</div>
 									</div>
 								</div>
 								<div class="cart-tab-4">
-									<div class="item-price-total">100</div>
+									<div class="item-price-total">{{item.product.productPrice * item.checkedNum}}</div>
 								</div>
 								<div class="cart-tab-5">
 									<div class="cart-item-opration">
@@ -114,7 +114,6 @@
 </template>
 
 <script>
-	
 	import NavHeader from '@/components/NavHeader'
 	import NavFooter from '@/components/NavFooter'
 	import NavBread from '@/components/NavBread'
@@ -123,12 +122,12 @@
 	import axios from 'axios'
 	export default {
 		name: 'Cart',
-		data () {
+		data() {
 			return {
 				cartList: []
 			}
 		},
-		mounted(){
+		mounted() {
 			this.getCart()
 		},
 		components: {
@@ -138,11 +137,29 @@
 			// PopModal
 		},
 		methods: {
-			getCart () {
+			getCart() {
 				axios.get('/users/getcart').then((resp) => {
 					let res = resp.data
 					if (res.status == 1) {
-						this.cartList = res.msg
+						axios.get('/goods/getproducts').then((result) => {
+							if (result.data.status == 1) {
+								let prods = result.data.result.list
+								for (let j = 0; j < res.msg.length; j++) {
+									for (let i = 0; i < prods.length; i++) {
+										if (prods[i]._id == res.msg[j].productId) {
+											res.msg[j].product = prods[i]
+										}
+										// console.log(i)
+									}
+									// console.log(j)								
+								}
+								// console.log(res.msg)
+								this.cartList = res.msg
+							} else {
+								this.cartList = []
+							}
+						})
+						// this.cartList = res.msg
 					} else {
 						this.cartList = []
 					}
