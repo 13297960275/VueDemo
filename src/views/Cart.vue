@@ -27,7 +27,7 @@
 							<li v-for="item in cartList" v-bind:id="item.productId">
 								<div class="cart-tab-1">
 									<div class="cart-item-check">
-										<a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked=='1'}" @click="editCart('checked',item)">
+										<a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked}" @click="editProd(0,item)">
 											<svg class="icon icon-ok">
 												<use xlink:href="#icon-ok"></use>
 											</svg>
@@ -47,9 +47,9 @@
 									<div class="item-quantity">
 										<div class="select-self select-self-open">
 											<div class="select-self-area">
-												<a class="input-sub">-</a>
+												<a class="input-sub" @click="editProd(-1,item)">-</a>
 												<span class="select-ipt">{{item.checkedNum}}</span>
-												<a class="input-add">+</a>
+												<a class="input-add" @click="editProd(1,item)">+</a>
 											</div>
 										</div>
 									</div>
@@ -183,7 +183,11 @@
 				this.modalShow = false
 			},
 			removeProd() {
-				axios.post('/users/removeprodct',{params:{pId:this.removeProdId}}).then((resp) => {
+				axios.post('/users/removecart', {
+					params: {
+						pId: this.removeProdId
+					}
+				}).then((resp) => {
 					let res = resp.data
 					if (res.status == 1) {
 						this.modalShow = true
@@ -191,6 +195,7 @@
 						this.formMsg = '从购物车移除商品成功'
 						this.isStatusOK = true
 						this.ensureRemove = false
+						getCart()
 					} else {
 						this.modalShow = true
 						this.formTitle = '失败'
@@ -203,7 +208,31 @@
 					this.formMsg = '从购物车移除商品失败'
 					this.ensureRemove = false
 				})
-			}
+			},
+			editProd(num, prod) {
+				if (num == 0) {
+					prod.checked = !prod.checked
+				}
+				if (num < 0 && prod.checkedNum <= 1) {
+					this.openModal(prod.productId)
+				} else {
+					prod.checkedNum += num
+				}
+				axios.post('/users/editcart', {
+					params: {
+						pId: prod.productId,
+						checkedNum: prod.checkedNum,
+						checked: prod.checked
+					}
+				}).then((resp) => {
+					let res = resp.data
+					if (res.status == 1) {
+					} else {
+					}
+				}).catch((err) => {
+				})
+			},
+
 		}
 	}
 </script>

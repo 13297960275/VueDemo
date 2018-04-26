@@ -32,8 +32,11 @@ module.exports = (app) => {
 	// 查询用户购物车数据
 	app.get('/users/getcart', userCtrl.userSignInRequired, userCtrl.getCart)
 
-	// 查询用户购物车数据
-	app.post('/users/removeprodct', userCtrl.userSignInRequired, userCtrl.removeProduct)
+	// 移除用户购物车数据
+	app.post('/users/removecart', userCtrl.userSignInRequired, userCtrl.removeCart)
+
+	// 编辑用户购物车
+	app.post('/users/editcart', userCtrl.userSignInRequired, userCtrl.editCart)
 
 	// 用户登录
 	app.post('/users/signin', userCtrl.signIn)

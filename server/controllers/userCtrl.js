@@ -188,7 +188,7 @@ exports.getCart = (req, res) => {
 }
 
 // 从用户的购物车中删除商品
-exports.removeProduct = (req, res) => {
+exports.removeCart = (req, res) => {
 	let uId = req.session.user._id
 	let pId = req.body.pId
 	User.findById({
@@ -223,6 +223,38 @@ exports.removeProduct = (req, res) => {
 					msg: '用户不存在'
 				})
 			}
+		}
+	})
+}
+
+//编辑用户购物车
+exports.editCart = (req, res) => {
+	let uId = req.session.user._id
+	let pId = req.body.pId
+	console.log(req.body)
+	let checkedNum = req.body.checkedNum
+	let checked = req.body.checked
+
+	User.update({
+		'_id': uId,
+		'cartList.productId': pId
+	}, {
+		'cartList.$.checkedNum': checkedNum,
+		'cartList.$.checked': checked,
+	}, (err, doc) => {
+
+		if (err) {
+			console.log(err.message)
+			return res.json({
+				status: 0,
+				msg: '编辑购物车失败，请稍后重试'
+			})
+		} else {
+			console.log(doc)
+			return res.json({
+				status: 1,
+				msg: '编辑购物车成功'
+			})
 		}
 	})
 }
