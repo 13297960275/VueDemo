@@ -102,7 +102,7 @@ function serProducts() {
 		})
 	}
 }
-serProducts()
+// serProducts()
 
 // 获取商品信息
 exports.getProducts = (req, res) => {

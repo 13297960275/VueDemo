@@ -127,9 +127,9 @@
 			loadMsg: '下拉加载更多',
 			scrollHeight: 20,
 			modalShow: false, // 模态框是否显示
-			formTitle: '',
-			formMsg: '',
-			isStatusOK: false,
+			formTitle: '', // 模态框标题
+			formMsg: '', // 模态框提示内容
+			isStatusOK: false, // 是否操作成功
 		}
 	},
 	components: {

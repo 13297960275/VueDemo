@@ -187,6 +187,46 @@ exports.getCart = (req, res) => {
 	})
 }
 
+// 从用户的购物车中删除商品
+exports.removeProduct = (req, res) => {
+	let uId = req.session.user._id
+	let pId = req.body.pId
+	User.findById({
+		_id: uId
+	}, (err, user) => {
+		if (err) {
+			return res.json({
+				status: 0,
+				msg: '服务器错误，请稍后重试'
+			})
+		} else {
+			if (user) {
+				let index = user.cartList.findIndex(prod => prod.productId === pId)
+				user.cartList.splice(index, 1)
+
+				user.save((err, user2) => {
+					if (err) {
+						return res.json({
+							status: 0,
+							msg: '服务器错误，请稍后重试'
+						})
+					} else {
+						return res.json({
+							status: 1,
+							msg: '移除商品成功'
+						})
+					}
+				})
+			} else {
+				return res.json({
+					status: 0,
+					msg: '用户不存在'
+				})
+			}
+		}
+	})
+}
+
 //  admin delete user fun
 exports.delUserFun = (req, res) => {
 	let id = req.query.id

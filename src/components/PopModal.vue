@@ -7,7 +7,7 @@
 					<button class="md-close" @click="closeModal">Close</button>
 				</div>
 				<div class="md-content">
-					<div class="confirm-tips">
+					<div class="confirm-tips" style="line-height: 5;">
 						<slot name="formErrorMsg"></slot>
 						<slot name="formContent"></slot>
 					</div>

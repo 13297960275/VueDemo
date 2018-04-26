@@ -24,7 +24,7 @@
 							</ul>
 						</div>
 						<ul class="cart-item-list">
-							<li v-for="item in cartList">
+							<li v-for="item in cartList" v-bind:id="item.productId">
 								<div class="cart-tab-1">
 									<div class="cart-item-check">
 										<a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked=='1'}" @click="editCart('checked',item)">
@@ -59,7 +59,7 @@
 								</div>
 								<div class="cart-tab-5">
 									<div class="cart-item-opration">
-										<a href="javascript:;" class="item-edit-btn">
+										<a href="javascript:;" @click="openModal(item.productId)" class="item-edit-btn">
 											<svg class="icon icon-del">
 												<use xlink:href="#icon-del"></use>
 											</svg>
@@ -95,36 +95,41 @@
 			</div>
 		</div>
 
-	<!-- <pop-modal v-bind:modalShow="modalShow" v-bind:formTitle="formTitle" v-on:close="closeModal">
-		<div slot="formContent">
-			<svg v-if="isStatusOK" class="icon-status-ok">
-				<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
-			</svg>		
-			<span>{{formMsg}}</span>	
-		</div>
-		<div slot="formBtnGrop">
-			<a href="javascript:;" v-if="!isStatusOK" class="btn btn--m" @click="closeModal">关闭</a>
-			<a href="javascript:;" v-if="isStatusOK" class="btn btn--m" @click="closeModal">继续购物</a>
-			<router-link v-if="isStatusOK" class="btn btn--m" to="/cart">查看购物车</router-link>
-		</div>
-	</pop-modal> -->
+		<pop-modal v-bind:modalShow="modalShow" v-bind:formTitle="formTitle" v-on:close="closeModal">
+			<div slot="formContent">
+				<svg v-if="isStatusOK" class="icon-status-ok">
+					<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
+				</svg>		
+				<span>{{formMsg}}</span>	
+			</div>
+			<div slot="formBtnGrop">
+				<a href="javascript:;" v-if="ensureRemove" class="btn btn--m" @click="removeProd">确认</a>
+				<a href="javascript:;" class="btn btn--m" @click="closeModal">关闭</a>
+			</div>
+		</pop-modal>
 
-	<nav-footer></nav-footer>
-</div>
+		<nav-footer></nav-footer>
+	</div>
 </template>
 
 <script>
 	import NavHeader from '@/components/NavHeader'
 	import NavFooter from '@/components/NavFooter'
 	import NavBread from '@/components/NavBread'
-	// import PopModal from '@/components/PopModal'
+	import PopModal from '@/components/PopModal'
 
 	import axios from 'axios'
 	export default {
 		name: 'Cart',
 		data() {
 			return {
-				cartList: []
+				cartList: [],
+				modalShow: false, // 模态框是否显示
+				formTitle: '', // 模态框标题
+				formMsg: '', // 模态框提示内容
+				removeProdId: '', // 要移除的商品id
+				isStatusOK: false, // 是否操作成功
+				ensureRemove: true, // 确认键是否显示
 			}
 		},
 		mounted() {
@@ -134,7 +139,7 @@
 			NavHeader,
 			NavFooter,
 			NavBread,
-			// PopModal
+			PopModal
 		},
 		methods: {
 			getCart() {
@@ -166,12 +171,41 @@
 				}).catch((err) => {
 					console.log(err)
 				})
+			},
+			openModal(pId) {
+				this.modalShow = true
+				this.formTitle = '警告'
+				this.formMsg = '确认从购物车移除该商品'
+				this.removeProdId = pId
+				this.ensureRemove = true
+			},
+			closeModal() {
+				this.modalShow = false
+			},
+			removeProd() {
+				axios.post('/users/removeprodct',{params:{pId:this.removeProdId}}).then((resp) => {
+					let res = resp.data
+					if (res.status == 1) {
+						this.modalShow = true
+						this.formTitle = '成功'
+						this.formMsg = '从购物车移除商品成功'
+						this.isStatusOK = true
+						this.ensureRemove = false
+					} else {
+						this.modalShow = true
+						this.formTitle = '失败'
+						this.formMsg = '从购物车移除商品失败'
+						this.ensureRemove = false
+					}
+				}).catch((err) => {
+					this.modalShow = true
+					this.formTitle = '失败'
+					this.formMsg = '从购物车移除商品失败'
+					this.ensureRemove = false
+				})
 			}
 		}
 	}
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
