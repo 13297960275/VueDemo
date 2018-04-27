@@ -90,10 +90,13 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods = {
 	comparePassword: function(_pwd, cb) {
+		// console.log('_pwd'+_pwd)
+		// console.log('this.password'+this.password)
 		bcrypt.compare(_pwd, this.password, function(err, isMatch) {
 			if (err) {
 				return cb(err)
 			}
+			// console.log(isMatch)
 
 			cb(null, isMatch)
 		})

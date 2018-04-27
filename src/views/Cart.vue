@@ -189,20 +189,24 @@
 					}
 				}).then((resp) => {
 					let res = resp.data
+					console.log(res)
 					if (res.status == 1) {
+						console.log('true')
 						this.modalShow = true
 						this.formTitle = '成功'
 						this.formMsg = '从购物车移除商品成功'
 						this.isStatusOK = true
 						this.ensureRemove = false
-						getCart()
+						this.getCart()
 					} else {
+						console.log('false')
 						this.modalShow = true
 						this.formTitle = '失败'
 						this.formMsg = '从购物车移除商品失败'
 						this.ensureRemove = false
 					}
 				}).catch((err) => {
+					console.log(err)
 					this.modalShow = true
 					this.formTitle = '失败'
 					this.formMsg = '从购物车移除商品失败'

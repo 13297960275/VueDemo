@@ -115,6 +115,8 @@ exports.signIn = (req, res) => {
 		password: req.body.userPwd
 	}
 
+	// console.log(_user.name + '===' + _user.password)
+
 	User.findOne({
 		name: _user.name
 	}, (err, user) => {
@@ -235,25 +237,31 @@ exports.editCart = (req, res) => {
 	let checkedNum = req.body.checkedNum
 	let checked = req.body.checked
 
-	User.update({
-		'_id': uId,
-		'cartList.productId': pId
-	}, {
-		'cartList.$.checkedNum': checkedNum,
-		'cartList.$.checked': checked,
-	}, (err, doc) => {
+	User.findById(uId, (err, user) => {
+		if (user) {
+			let index = user.cartList.findIndex(prod => prod.productId === pId)
+			console.log(index)
+			console.log(JSON.stringify(user.cartList[index]))
+			user.cartList[index].checkedNum = checkedNum
+			user.cartList[index].checked = checked
 
-		if (err) {
-			console.log(err.message)
-			return res.json({
-				status: 0,
-				msg: '编辑购物车失败，请稍后重试'
+			user.save((err, user2) => {
+				if (err) {
+					return res.json({
+						status: 0,
+						msg: '编辑购物车失败，请稍后重试'
+					})
+				} else {
+					return res.json({
+						status: 1,
+						msg: '编辑购物车成功'
+					})
+				}
 			})
 		} else {
-			console.log(doc)
 			return res.json({
-				status: 1,
-				msg: '编辑购物车成功'
+				status: 0,
+				msg: '用户不存在'
 			})
 		}
 	})
