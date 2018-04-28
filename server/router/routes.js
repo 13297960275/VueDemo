@@ -11,7 +11,7 @@ module.exports = (app) => {
 
 	// pre handler user
 	app.use((req, res, next) => {
-		// console.log('pre session==' + JSON.stringify(req.session.user))
+		// console.log('pre session===' + JSON.stringify(req.session.user))
 
 		let _user = req.session.user
 		if (_user) {

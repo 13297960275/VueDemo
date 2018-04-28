@@ -12,9 +12,10 @@
 				<div class="filter-nav">
 					<span class="sortby">Sort by:</span>
 					<!-- <a href="javascript:void(0)" class="default cur">Default</a> -->
-					<a href="javascript:void(0)" class="price default cur" @click="sortGoods">Price 	<svg class="icon icon-arrow-short" v-bind:class="{'rotate180':sortFlag}">			<use xlink:href="#icon-arrow-short"></use>
-					</svg>
-				</a>
+					<a href="javascript:void(0)" class="price default cur" @click="sortGoods">Price
+						<svg class="icon icon-arrow-short" v-bind:class="{'rotate180':sortFlag}">	<use xlink:href="#icon-arrow-short"></use>
+						</svg>
+					</a>
 				<a href="javascript:void(0)" class="filterby stopPop" @click="showFilterPop">Filter by</a>
 			</div>
 			<div class="accessory-result">
@@ -22,9 +23,9 @@
 				<div class="filter stopPop" id="filter" v-bind:class="{'filterby-show':filterBy}">
 					<dl class="filter-price">
 						<dt>Price:</dt>
-						<!-- <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked == 'All'}" @click="priceChecked = 'All'">All</a></dd> -->
-						<dd v-for="(item,index) in priceFilter">
-							<a href="javascript:void(0)" @click="setPriceFilter(index)" v-bind:class="{'cur':priceChecked == index}">{{item.startPrice}} <span v-if="item.endPrice">-</span> {{item.endPrice}}</a>
+						<!-- <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked === 'All'}" @click="priceChecked = 'All'">All</a></dd> -->
+						<dd v-for="(item, index) in priceFilter">
+							<a href="javascript:void(0)" @click="setPriceFilter(index)" v-bind:class="{'cur':priceChecked === index}">{{item.startPrice}} <span v-if="item.endPrice">-</span> {{item.endPrice}}</a>
 						</dd>
 					</dl>
 				</div>
@@ -33,7 +34,7 @@
 				<div class="accessory-list-wrap">
 					<div class="accessory-list col-4">
 						<ul>
-							<li v-for="(item,index) in goodList">
+							<li v-for="item in goodList">
 								<div class="pic">
 									<a href="#">
 										<!-- <img alt="" v-bind:src="'/static/'+item.productImg"> -->
@@ -64,8 +65,8 @@
 		<div slot="formContent">
 			<svg v-if="isStatusOK" class="icon-status-ok">
 				<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
-			</svg>		
-			<span>{{formMsg}}</span>	
+			</svg>
+			<span>{{formMsg}}</span>
 		</div>
 		<div slot="formBtnGrop">
 			<a href="javascript:;" v-if="!isStatusOK" class="btn btn--m" @click="closeModal">关闭</a>
@@ -90,7 +91,7 @@
 
 	export default {
 		name: 'GoodList',
-		data() {
+		data () {
 			return {
 			goodList: [], // 商品列表
 			priceFilter: [ // 价格区间
@@ -114,7 +115,7 @@
 			}, {
 				startPrice: 5000.00,
 				endPrice: 7000.00
-			},
+			}
 			],
 			priceChecked: 0,
 			filterBy: false, // 价格选择框
@@ -129,7 +130,7 @@
 			modalShow: false, // 模态框是否显示
 			formTitle: '', // 模态框标题
 			formMsg: '', // 模态框提示内容
-			isStatusOK: false, // 是否操作成功
+			isStatusOK: false // 是否操作成功
 		}
 	},
 	components: {
@@ -138,13 +139,13 @@
 		NavBread,
 		PopModal
 	},
-	mounted() {
+	mounted () {
 		this.scrollHeight = document.documentElement.clientHeight / 2
 		this.getGoods(false)
 
 		axios.interceptors.request.use((config) => {
 			// console.log("request init.");
-			console.log("config:===" + config)
+			console.log('config:===' + config)
 			return config
 		})
 		axios.interceptors.response.use((response) => {
@@ -158,7 +159,7 @@
 		})
 	},
 	methods: {
-		getGoods(flag) {
+		getGoods (flag) {
 			this.loading = true
 			let param = {
 				page: this.page,
@@ -174,8 +175,8 @@
 				this.loading = false
 				this.loadMsg = '下拉加载更多'
 				let res = result.data
-				if (res.status == 1) {
-					if (flag == true) {
+				if (res.status === 1) {
+					if (flag === true) {
 						this.goodList = this.goodList.concat(res.result.list)
 						if (res.result.count < this.pageSize) {
 							this.busy = true
@@ -197,37 +198,37 @@
 				console.log(err)
 			})
 		},
-		sortGoods() {
+		sortGoods () {
 			this.sortFlag = !this.sortFlag
 			this.page = 1
 			this.getGoods(false)
 		},
-		setPriceFilter(index) {
+		setPriceFilter (index) {
 			this.priceChecked = index
 			this.page = 1
 			this.getGoods(false)
 			this.closeFilterPop()
 		},
-		showFilterPop() {
+		showFilterPop () {
 			this.filterBy = true
 			this.overlayFlag = true
 		},
-		closeFilterPop() {
+		closeFilterPop () {
 			this.filterBy = false
 			this.overlayFlag = false
 		},
-		loadMore() {
+		loadMore () {
 			this.busy = true
 			setTimeout(() => {
 				this.page++
 				this.getGoods(true)
 				// this.busy = false
-			}, 500);
+			}, 500)
 		},
-		add2Cart(pId) {
+		add2Cart (pId) {
 			axios.post('/goods/add2cart', {
 				// userId: '5ada194e63d8761fbc4e4206',
-				prodId: pId,
+				prodId: pId
 				// prodNum: 2
 			}).then((resp) => {
 				let res = resp.data
@@ -243,14 +244,10 @@
 					this.isStatusOK = true
 				}
 			}).catch((err) => {
-				this.modalShow = true
-				this.formTitle = '警告'
-				this.formMsg = res.msg
-				this.isStatusOK = false
 				console.log(err)
 			})
 		},
-		closeModal() {
+		closeModal () {
 			this.modalShow = false
 		}
 	}

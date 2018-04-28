@@ -293,7 +293,7 @@ exports.userSignInRequired = (req, res, next) => {
 	let user = req.session.user
 	if (!user) {
 		// 用户未登录
-		// console.log('userSignInRequired session.user == ' + JSON.stringify(req.session.user))
+		// console.log('userSignInRequired session.user === ' + JSON.stringify(req.session.user))
 		return res.json({
 			status: 1001,
 			msg: '未登录，请登陆后重试',
@@ -309,7 +309,7 @@ exports.userAdminRequired = (req, res, next) => {
 	let user = req.session.user
 	if (user.role <= 10) {
 		// 普通用户
-		// console.log('userAdminRequired session.user == ' + JSON.stringify(req.session.user))
+		// console.log('userAdminRequired session.user === ' + JSON.stringify(req.session.user))
 		return res.json({
 			status: 1002,
 			msg: '非管理员账号，拒绝访问',

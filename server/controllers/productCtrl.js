@@ -144,7 +144,7 @@ exports.getProductsByPage = (req, res) => {
 	}
 
 	let skip = pageSize * (page - 1)
-	// console.log(JSON.stringify(params) + '===' + page + '===' + pageSize + '====' + sort + '===' + skip)
+	// console.log(JSON.stringify(params) + '===' + page + '===' + pageSize + '=====' + sort + '===' + skip)
 	let productModal = Product.find(params).skip(skip).limit(pageSize)
 	productModal.sort({
 		'productPrice': sort
@@ -175,7 +175,7 @@ exports.add2Cart = (req, res) => {
 	let pId = req.body.prodId
 	let pNum = 1
 	// let pNum = parseInt(req.body.prodNum)
-	// console.log(uId + '====' + pId + '====' + pNum)
+	// console.log(uId + '=====' + pId + '=====' + pNum)
 
 	User.findById(uId, (err, user) => {
 		if (err) {
@@ -195,7 +195,7 @@ exports.add2Cart = (req, res) => {
 				// 	})
 				// } else {
 				let hasProd = user.cartList.some((item) => {
-					return item.productId == pId
+					return item.productId === pId
 				}) // 判断购物车中是否已存在当前商品
 				if (!hasProd) {
 					let prod = {

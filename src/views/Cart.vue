@@ -99,8 +99,8 @@
 			<div slot="formContent">
 				<svg v-if="isStatusOK" class="icon-status-ok">
 					<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok"></use>
-				</svg>		
-				<span>{{formMsg}}</span>	
+				</svg>
+				<span>{{formMsg}}</span>
 			</div>
 			<div slot="formBtnGrop">
 				<a href="javascript:;" v-if="ensureRemove" class="btn btn--m" @click="removeProd">确认</a>
@@ -121,7 +121,7 @@
 	import axios from 'axios'
 	export default {
 		name: 'Cart',
-		data() {
+		data () {
 			return {
 				cartList: [],
 				modalShow: false, // 模态框是否显示
@@ -129,10 +129,10 @@
 				formMsg: '', // 模态框提示内容
 				removeProdId: '', // 要移除的商品id
 				isStatusOK: false, // 是否操作成功
-				ensureRemove: true, // 确认键是否显示
+				ensureRemove: true // 确认键是否显示
 			}
 		},
-		mounted() {
+		mounted () {
 			this.getCart()
 		},
 		components: {
@@ -142,29 +142,25 @@
 			PopModal
 		},
 		methods: {
-			getCart() {
+			getCart () {
 				axios.get('/users/getcart').then((resp) => {
 					let res = resp.data
-					if (res.status == 1) {
+					if (res.status === 1) {
 						axios.get('/goods/getproducts').then((result) => {
-							if (result.data.status == 1) {
+							if (result.data.status === 1) {
 								let prods = result.data.result.list
 								for (let j = 0; j < res.msg.length; j++) {
 									for (let i = 0; i < prods.length; i++) {
-										if (prods[i]._id == res.msg[j].productId) {
+										if (prods[i]._id === res.msg[j].productId) {
 											res.msg[j].product = prods[i]
 										}
-										// console.log(i)
 									}
-									// console.log(j)								
 								}
-								// console.log(res.msg)
 								this.cartList = res.msg
 							} else {
 								this.cartList = []
 							}
 						})
-						// this.cartList = res.msg
 					} else {
 						this.cartList = []
 					}
@@ -172,17 +168,17 @@
 					console.log(err)
 				})
 			},
-			openModal(pId) {
+			openModal (pId) {
 				this.modalShow = true
 				this.formTitle = '警告'
 				this.formMsg = '确认从购物车移除该商品'
 				this.removeProdId = pId
 				this.ensureRemove = true
 			},
-			closeModal() {
+			closeModal () {
 				this.modalShow = false
 			},
-			removeProd() {
+			removeProd () {
 				axios.post('/users/removecart', {
 					params: {
 						pId: this.removeProdId
@@ -190,7 +186,7 @@
 				}).then((resp) => {
 					let res = resp.data
 					console.log(res)
-					if (res.status == 1) {
+					if (res.status === 1) {
 						console.log('true')
 						this.modalShow = true
 						this.formTitle = '成功'
@@ -213,8 +209,8 @@
 					this.ensureRemove = false
 				})
 			},
-			editProd(num, prod) {
-				if (num == 0) {
+			editProd (num, prod) {
+				if (num === 0) {
 					prod.checked = !prod.checked
 				}
 				if (num < 0 && prod.checkedNum <= 1) {
@@ -230,13 +226,13 @@
 					}
 				}).then((resp) => {
 					let res = resp.data
-					if (res.status == 1) {
+					if (res.status === 1) {
 					} else {
 					}
 				}).catch((err) => {
+					console.log(err)
 				})
-			},
-
+			}
 		}
 	}
 </script>

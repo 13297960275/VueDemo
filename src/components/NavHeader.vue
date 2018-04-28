@@ -137,7 +137,7 @@
 			checkLogin() {
 				axios.get('/users/checklogin').then((resp) => {
 					let res = resp.data
-					if (res.status == 1) {
+					if (res.status === 1) {
 						this.loginName = res.result
 					} else {
 						this.loginName = ''
@@ -153,7 +153,7 @@
 			},
 			showLogin(num) {
 				this.errorFlag = false
-				if (num == 1) {
+				if (num === 1) {
 					this.isLogin = true
 					this.formTitle = '登录'
 					this.formBtn = '登录'
@@ -181,7 +181,7 @@
 					userPwd: this.userPwd
 				}).then((resp) => {
 					let res = resp.data
-					if (res.status == 1) {
+					if (res.status === 1) {
 						this.loginFlag = false
 						this.loginName = this.userName
 					} else {
@@ -197,7 +197,7 @@
 			signOut() {
 				axios.get('/users/signout').then((resp) => {
 					let res = resp.data
-					if (res.status == 1) {
+					if (res.status === 1) {
 						this.loginFlag = false
 						this.loginName = ''
 					} else {

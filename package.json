@@ -5,7 +5,10 @@
   "author": "Lingesin_Deng <Lingesin_Deng@wistronits.com>",
   "private": true,
   "scripts": {
-    "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "webpack_dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
+    "server_dev_pm2": "pm2 start server/app.js",
+    "server_dev": "supervisor server/app.js",
+    "dev": "npm run server_dev_pm2 && npm run webpack_dev",
     "start": "npm run dev",
     "unit": "jest --config test/unit/jest.conf.js --coverage",
     "e2e": "node test/e2e/runner.js",
