@@ -24,7 +24,7 @@
 							</ul>
 						</div>
 						<ul class="cart-item-list">
-							<li v-for="item in cartList" v-bind:id="item.productId">
+							<li v-for="item in cartList" :key="item.productId" v-bind:id="item.productId">
 								<div class="cart-tab-1">
 									<div class="cart-item-check">
 										<a href="javascipt:;" class="checkbox-btn item-check-btn" v-bind:class="{'check':item.checked}" @click="editProd(0,item)">
@@ -74,8 +74,8 @@
 					<div class="cart-foot-inner">
 						<div class="cart-foot-l">
 							<div class="item-all-check">
-								<a href="javascipt:;">
-									<span class="checkbox-btn item-check-btn">
+								<a href="javascipt:;" @click="editProd(0, 0) ">
+									<span class="checkbox-btn item-check-btn" v-bind:class="{'check':checkAllFlag}">
 										<svg class="icon icon-ok"><use xlink:href="#icon-ok"/></svg>
 									</span>
 									<span>Select all</span>
@@ -84,10 +84,10 @@
 						</div>
 						<div class="cart-foot-r">
 							<div class="item-total">
-								Item total: <span class="total-price">500</span>
+								Item total: <span class="total-price">{{totalPrice | currency('￥')}}</span>
 							</div>
 							<div class="btn-wrap">
-								<a class="btn btn--red">Checkout</a>
+								<a class="btn btn--red" v-bind:class="{'btn--dis':checkedCount === 0}" @click="checkOut">Checkout</a>
 							</div>
 						</div>
 					</div>
@@ -135,6 +135,29 @@
 		mounted () {
 			this.getCart()
 		},
+		// filers: {
+		// 	currency: currency
+		// },
+		computed: { // 计算属性
+			// checkAllFlag: false, // 是否全选
+			checkAllFlag () {
+				return this.checkedCount === this.cartList.length
+			},
+			checkedCount () {
+				let i = 0
+				this.cartList.forEach((item) => {
+					if (item.checked) i++
+				})
+				return i
+			},
+			totalPrice () {
+				let money = 0
+				this.cartList.forEach((item) => {
+					if (item.checked) money += item.product.productPrice * item.checkedNum
+				})
+				return money
+			}
+		},
 		components: {
 			NavHeader,
 			NavFooter,
@@ -143,7 +166,7 @@
 		},
 		methods: {
 			getCart () {
-				axios.get('/users/getcart').then((resp) => {
+				axios.get('/users/userinfo?type=cart').then((resp) => {
 					let res = resp.data
 					if (res.status === 1) {
 						axios.get('/goods/getproducts').then((result) => {
@@ -180,9 +203,7 @@
 			},
 			removeProd () {
 				axios.post('/users/removecart', {
-					params: {
-						pId: this.removeProdId
-					}
+					pId: this.removeProdId
 				}).then((resp) => {
 					let res = resp.data
 					console.log(res)
@@ -210,28 +231,41 @@
 				})
 			},
 			editProd (num, prod) {
-				if (num === 0) {
-					prod.checked = !prod.checked
-				}
-				if (num < 0 && prod.checkedNum <= 1) {
-					this.openModal(prod.productId)
+				let flag = this.checkAllFlag
+				let params = {}
+				if (prod === 0) {
+					params = {
+						checkAll: !flag
+					}
 				} else {
-					prod.checkedNum += num
-				}
-				axios.post('/users/editcart', {
-					params: {
+					if (num === 0) {
+						prod.checked = !prod.checked
+					}
+					if (num < 0 && prod.checkedNum <= 1) {
+						this.openModal(prod.productId)
+					} else {
+						prod.checkedNum += num
+					}
+					params = {
 						pId: prod.productId,
 						checkedNum: prod.checkedNum,
 						checked: prod.checked
 					}
-				}).then((resp) => {
+				}
+				axios.post('/users/editcart', params).then((resp) => {
 					let res = resp.data
 					if (res.status === 1) {
+						this.getCart()
 					} else {
 					}
 				}).catch((err) => {
 					console.log(err)
 				})
+			},
+			checkOut () {
+				if (this.checkedCount > 0) {
+					this.$router.push('address')
+				}
 			}
 		}
 	}

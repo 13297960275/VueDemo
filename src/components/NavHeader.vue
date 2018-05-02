@@ -1,7 +1,6 @@
 <template>
 	<div>
 		<header class="header">
-		
 			<symbol id="icon-add" viewBox="0 0 32 32">
 				<title>add2</title>
 				<path class="path1"
@@ -81,7 +80,7 @@
 						<div class="md-title">{{formTitle}}</div>
 						<button class="md-close" @click="closeLoginPop">Close</button>
 					</div>
-					<div class="md-content">
+					<form class="md-content">
 						<div class="confirm-tips">
 							<div class="error-wrap">
 								<span v-show="errorFlag" class="error error-show">{{formErrorMsg}}</span>
@@ -93,14 +92,14 @@
 								</li>
 								<li class="regi_form_input noMargin">
 									<i class="icon IconPwd"></i>
-									<input type="password" v-model="userPwd" placeholder="Password" class="regi_login_input" tabindex="2" name="password">
+									<input type="password" v-model="userPwd" placeholder="User Password" class="regi_login_input" tabindex="2" name="loginpwd">
 								</li>
 							</ul>
 						</div>
 						<div class="login-wrap">
 							<a href="javascript:;" @click="loginOrRegister" class="btn-login">{{formBtn}}</a>
 						</div>
-					</div>
+					</form>
 				</div>
 			</div>
 
@@ -114,7 +113,7 @@
 	// import inportComp from './inportComp'
 	export default {
 		name: 'NavHeader',
-		data() {
+		data () {
 			return {
 				userName: '', // 登录名
 				userPwd: '', // 密码
@@ -124,17 +123,17 @@
 				isLogin: true, // 登录or注册
 				formTitle: '登录', // 标题文字
 				formBtn: '登录', // 按钮文字
-				loginName: '', // 已登录登录名
+				loginName: '' // 已登录登录名
 			}
 		},
 		components: {
 			// inportComp
 		},
-		mounted() {
+		mounted () {
 			this.checkLogin()
 		},
 		methods: {
-			checkLogin() {
+			checkLogin () {
 				axios.get('/users/checklogin').then((resp) => {
 					let res = resp.data
 					if (res.status === 1) {
@@ -148,10 +147,10 @@
 					this.formErrorMsg = '服务器错误，请稍后重试'
 				})
 			},
-			closeLoginPop() {
+			closeLoginPop () {
 				this.loginFlag = false
 			},
-			showLogin(num) {
+			showLogin (num) {
 				this.errorFlag = false
 				if (num === 1) {
 					this.isLogin = true
@@ -164,7 +163,7 @@
 				}
 				this.loginFlag = true
 			},
-			loginOrRegister() {
+			loginOrRegister () {
 				if (!this.userName || !this.userPwd) {
 					this.errorFlag = true
 					this.formErrorMsg = '请输入用户名和密码'
@@ -194,7 +193,7 @@
 					this.formErrorMsg = '服务器错误，请稍后重试'
 				})
 			},
-			signOut() {
+			signOut () {
 				axios.get('/users/signout').then((resp) => {
 					let res = resp.data
 					if (res.status === 1) {
@@ -214,4 +213,3 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-

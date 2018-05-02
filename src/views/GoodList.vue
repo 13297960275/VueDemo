@@ -24,7 +24,7 @@
 					<dl class="filter-price">
 						<dt>Price:</dt>
 						<!-- <dd><a href="javascript:void(0)" v-bind:class="{'cur':priceChecked === 'All'}" @click="priceChecked = 'All'">All</a></dd> -->
-						<dd v-for="(item, index) in priceFilter">
+						<dd v-for="(item, index) in priceFilter" :key="item.startPrice">
 							<a href="javascript:void(0)" @click="setPriceFilter(index)" v-bind:class="{'cur':priceChecked === index}">{{item.startPrice}} <span v-if="item.endPrice">-</span> {{item.endPrice}}</a>
 						</dd>
 					</dl>
@@ -34,7 +34,7 @@
 				<div class="accessory-list-wrap">
 					<div class="accessory-list col-4">
 						<ul>
-							<li v-for="item in goodList">
+							<li v-for="item in goodList" :key="item.productId">
 								<div class="pic">
 									<a href="#">
 										<!-- <img alt="" v-bind:src="'/static/'+item.productImg"> -->
@@ -145,12 +145,12 @@
 
 		axios.interceptors.request.use((config) => {
 			// console.log("request init.");
-			console.log('config:===' + config)
+			// console.log('config:===' + config)
 			return config
 		})
 		axios.interceptors.response.use((response) => {
 			// console.log("response init.");
-			console.log('response:===' + response)
+			// console.log('response:===' + response)
 			let res = response.data
 			if (res.status > 1000) {
 				// alert(res.msg)

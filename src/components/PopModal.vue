@@ -27,7 +27,7 @@
 	export default {
 		name: 'PopModal',
 		props: ['modalShow', 'formTitle'],
-		data() {
+		data () {
 			return {
 				// formTitle: '警告'
 			}
@@ -36,7 +36,7 @@
 			// inportComp
 		},
 		methods: {
-			closeModal() {
+			closeModal () {
 				this.$emit('close')
 			}
 		}
@@ -44,4 +44,3 @@
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-

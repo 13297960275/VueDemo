@@ -170,69 +170,62 @@ exports.getProductsByPage = (req, res) => {
 
 // 添加商品到购物车
 exports.add2Cart = (req, res) => {
-	console.log('add2Cart')
 	let uId = req.session.user._id
 	let pId = req.body.prodId
 	let pNum = 1
 	// let pNum = parseInt(req.body.prodNum)
-	// console.log(uId + '=====' + pId + '=====' + pNum)
 
 	User.findById(uId, (err, user) => {
 		if (err) {
-			// console.log('err1')
 			return res.json({
 				status: 0,
 				msg: '服务器错误，请稍后重试'
 			})
 		} else {
 			if (user) {
-				// console.log('user1')
-				// Product.findById(pId, (err, product) => {
-				// if (err) {
-				// 	return res.json({
-				// 		status: 0,
-				// 		msg: '服务器错误，请稍后重试'
-				// 	})
-				// } else {
-				let hasProd = user.cartList.some((item) => {
-					return item.productId === pId
-				}) // 判断购物车中是否已存在当前商品
-				if (!hasProd) {
-					let prod = {
-						productId: pId,
-						checked: true,
-						checkedNum: pNum
-					}
-					user.cartList.push(prod)
-				} else {
-					let index = user.cartList.findIndex(prod => prod.productId === pId)
-					user.cartList[index].checkedNum += pNum
-				}
-				// console.log('user2')
-
-				// 保存
-				user.save((err, user) => {
+				Product.findById(pId, (err, product) => {
 					if (err) {
-						// console.log('err2')
 						return res.json({
 							status: 0,
-							msg: '服务器错误，请稍后重试'
+							msg: '该商品已下架，请稍后重试'
 						})
 					} else {
-						// console.log('success')
-						return res.json({
-							status: 1,
-							msg: ''
+						let hasProd = user.cartList.some((item) => {
+							return item.productId === pId
+						}) // 判断购物车中是否已存在当前商品
+						if (!hasProd) {
+							let prod = {
+								productId: pId,
+								checked: true,
+								checkedNum: pNum
+							}
+							user.cartList.push(prod)
+						} else {
+							let index = user.cartList.findIndex(prod => prod.productId === pId)
+							user.cartList[index].checkedNum += pNum
+						}
+						// console.log('user2')
+
+						// 保存
+						user.save((err, user) => {
+							if (err) {
+								return res.json({
+									status: 0,
+									msg: '服务器错误，请稍后重试'
+								})
+							} else {
+								return res.json({
+									status: 1,
+									msg: ''
+								})
+							}
 						})
 					}
 				})
-				// }
-				// })
 			}
 		}
 	})
 }
-
 
 //  admin add product page
 exports.addproduct = (req, res) => {

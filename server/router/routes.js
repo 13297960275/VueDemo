@@ -29,8 +29,8 @@ module.exports = (app) => {
 	// 添加商品到购物车
 	app.post('/goods/add2cart', userCtrl.userSignInRequired, productCtrl.add2Cart)
 
-	// 查询用户购物车数据
-	app.get('/users/getcart', userCtrl.userSignInRequired, userCtrl.getCart)
+	// 查询用户购物车数据、地址、订单
+	app.get('/users/userinfo/', userCtrl.userSignInRequired, userCtrl.getUserInfo)
 
 	// 移除用户购物车数据
 	app.post('/users/removecart', userCtrl.userSignInRequired, userCtrl.removeCart)

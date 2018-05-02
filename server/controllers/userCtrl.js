@@ -171,8 +171,10 @@ exports.signOut = (req, res) => {
 	})
 }
 
-exports.getCart = (req, res) => {
+// 获取用户购物车、地址、订单信息（type:'cart'/'address'/'order'
+exports.getUserInfo = (req, res) => {
 	let uId = req.session.user._id
+	let type = req.query.type
 
 	User.findById(uId, (err, user) => {
 		if (err) {
@@ -181,9 +183,24 @@ exports.getCart = (req, res) => {
 				msg: '服务器错误，请稍后重试'
 			})
 		} else {
+			let msg
+			switch (type) {
+				case 'cart':
+					msg = user.cartList
+					break;
+				case 'address':
+					msg = user.addressList
+					break;
+				case 'order':
+					msg = user.orderList
+					break;
+				default:
+					msg = []
+					break;
+			}
 			return res.json({
 				status: 1,
-				msg: user.cartList
+				msg: msg
 			})
 		}
 	})
@@ -193,9 +210,8 @@ exports.getCart = (req, res) => {
 exports.removeCart = (req, res) => {
 	let uId = req.session.user._id
 	let pId = req.body.pId
-	User.findById({
-		_id: uId
-	}, (err, user) => {
+
+	User.findById(uId, (err, user) => {
 		if (err) {
 			return res.json({
 				status: 0,
@@ -233,19 +249,23 @@ exports.removeCart = (req, res) => {
 exports.editCart = (req, res) => {
 	let uId = req.session.user._id
 	let pId = req.body.pId
-	console.log(req.body)
+	let checkAll = req.body.checkAll
+	console.log(checkAll)
 	let checkedNum = req.body.checkedNum
 	let checked = req.body.checked
 
-	User.findById(uId, (err, user) => {
-		if (user) {
-			let index = user.cartList.findIndex(prod => prod.productId === pId)
-			console.log(index)
-			console.log(JSON.stringify(user.cartList[index]))
-			user.cartList[index].checkedNum = checkedNum
-			user.cartList[index].checked = checked
-
-			user.save((err, user2) => {
+	User.findById(uId, (err, _user) => {
+		if (_user) {
+			if (!checkedNum) {
+				_user.cartList.forEach((item) => {
+					item.checked = checkAll
+				})
+			} else {
+				let index = _user.cartList.findIndex(prod => prod.productId === pId)
+				_user.cartList[index].checkedNum = checkedNum
+				_user.cartList[index].checked = checked
+			}
+			_user.save((err, user2) => {
 				if (err) {
 					return res.json({
 						status: 0,
