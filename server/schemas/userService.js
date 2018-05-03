@@ -35,7 +35,13 @@ const userSchema = new Schema({
 		checkedNum: Number
 	}],
 	orderList: Array,
-	addressList: Array,
+	addressList: [{
+		userName: String,
+		postCode: String,
+		streetName: String,
+		userTel: String,
+		isDefault: Boolean
+	}],
 
 	// 0: normal user
 	// 1: letified user

@@ -110,7 +110,8 @@ exports.getProducts = (req, res) => {
 		if (err) {
 			res.json({
 				status: 0,
-				msg: err.message
+				result: '',
+				msg: '服务器错误，请稍后重试'
 			})
 		} else {
 			res.json({
@@ -153,6 +154,7 @@ exports.getProductsByPage = (req, res) => {
 		if (err) {
 			res.json({
 				status: 0,
+				result: '',
 				msg: err.message
 			})
 		} else {
@@ -179,6 +181,7 @@ exports.add2Cart = (req, res) => {
 		if (err) {
 			return res.json({
 				status: 0,
+				result: '',
 				msg: '服务器错误，请稍后重试'
 			})
 		} else {
@@ -187,6 +190,7 @@ exports.add2Cart = (req, res) => {
 					if (err) {
 						return res.json({
 							status: 0,
+							result: '',
 							msg: '该商品已下架，请稍后重试'
 						})
 					} else {
@@ -211,11 +215,13 @@ exports.add2Cart = (req, res) => {
 							if (err) {
 								return res.json({
 									status: 0,
+									result: '',
 									msg: '服务器错误，请稍后重试'
 								})
 							} else {
 								return res.json({
 									status: 1,
+									result: user.cartList,
 									msg: ''
 								})
 							}

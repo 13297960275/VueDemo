@@ -47,11 +47,13 @@ exports.checkLogin = (req, res) => {
 	if (req.session.user) {
 		return res.json({
 			status: 1,
-			result: req.session.user.name
+			result: req.session.user.name,
+			msg: ''
 		})
 	} else {
 		return res.json({
 			status: 0,
+			result: '',
 			msg: '未登录，请登陆后重试'
 		})
 	}
@@ -64,18 +66,13 @@ exports.signUp = (req, res) => {
 		password: req.body.userPwd
 	}
 
-	console.log('_user:' + JSON.stringify(_user))
-
 	User.find({
 		name: _user.name
 	}, (err, user) => {
-		console.log(JSON.stringify('user' + user))
-
 		if (err) {
-			console.log(JSON.stringify('err1' + err))
-
 			return res.json({
 				status: 0,
+				result: '',
 				msg: '服务器错误，请稍后重试'
 			})
 		}
@@ -83,16 +80,47 @@ exports.signUp = (req, res) => {
 		if (user.length > 0) { // 已有账号
 			return res.json({
 				status: 0,
+				result: user.name,
 				msg: '用户名已存在'
 			})
 		} else {
+			_user.addressList = [{
+				userName: '小花',
+				postCode: '10001',
+				isDefault: true,
+				streetName: '北京市朝阳区前门48号',
+				userTel: '13568794568'
+			}, {
+				userName: '小红',
+				postCode: '10001',
+				isDefault: false,
+				streetName: '北京市朝阳区前门48号',
+				userTel: '13568794568'
+			}, {
+				userName: '小美',
+				postCode: '10001',
+				isDefault: false,
+				streetName: '北京市朝阳区前门48号',
+				userTel: '13568794568'
+			}, {
+				userName: '大龙',
+				postCode: '10001',
+				isDefault: false,
+				streetName: '北京市朝阳区前门48号',
+				userTel: '13568794568'
+			}, {
+				userName: '小虎',
+				postCode: '10001',
+				isDefault: false,
+				streetName: '北京市朝阳区前门48号',
+				userTel: '13568794568'
+			}]
 			userObj = new User(_user)
 			userObj.save((err, user2) => {
-				console.log(JSON.stringify('user2' + user2))
 				if (err) {
-					console.log(JSON.stringify('err2' + err))
 					return res.json({
 						status: 0,
+						result: '',
 						msg: '服务器错误，请稍后重试'
 					})
 				} else {
@@ -100,6 +128,7 @@ exports.signUp = (req, res) => {
 
 					return res.json({
 						status: 1,
+						result: user2,
 						msg: ''
 					})
 				}
@@ -123,6 +152,7 @@ exports.signIn = (req, res) => {
 		if (err) {
 			return res.json({
 				status: 0,
+				result: '',
 				msg: '服务器错误，请稍后重试'
 			})
 		}
@@ -130,7 +160,8 @@ exports.signIn = (req, res) => {
 		if (!user) { // 没有账号
 			return res.json({
 				status: 0,
-				msg: '用户名不存在'
+				result: _user.name,
+				msg: '用户未注册'
 			})
 		}
 
@@ -139,6 +170,7 @@ exports.signIn = (req, res) => {
 			if (err) {
 				return res.json({
 					status: 0,
+					result: '',
 					msg: '服务器错误，请稍后重试'
 				})
 			}
@@ -149,11 +181,13 @@ exports.signIn = (req, res) => {
 
 				return res.json({
 					status: 1,
+					result: user.name,
 					msg: ''
 				})
 			} else { // 密码不匹配
 				res.json({
 					status: 0,
+					result: '',
 					msg: '密码不正确'
 				})
 			}
@@ -167,6 +201,7 @@ exports.signOut = (req, res) => {
 
 	return res.json({
 		status: 1,
+		result: '',
 		msg: ''
 	})
 }
@@ -180,6 +215,7 @@ exports.getUserInfo = (req, res) => {
 		if (err) {
 			return res.json({
 				status: 0,
+				result: '',
 				msg: '服务器错误，请稍后重试'
 			})
 		} else {
@@ -200,7 +236,8 @@ exports.getUserInfo = (req, res) => {
 			}
 			return res.json({
 				status: 1,
-				msg: msg
+				result: msg,
+				msg: ''
 			})
 		}
 	})
@@ -215,6 +252,7 @@ exports.removeCart = (req, res) => {
 		if (err) {
 			return res.json({
 				status: 0,
+				result: '',
 				msg: '服务器错误，请稍后重试'
 			})
 		} else {
@@ -226,11 +264,13 @@ exports.removeCart = (req, res) => {
 					if (err) {
 						return res.json({
 							status: 0,
+							result: '',
 							msg: '服务器错误，请稍后重试'
 						})
 					} else {
 						return res.json({
 							status: 1,
+							result: user2.cartList,
 							msg: '移除商品成功'
 						})
 					}
@@ -238,9 +278,50 @@ exports.removeCart = (req, res) => {
 			} else {
 				return res.json({
 					status: 0,
+					result: '',
 					msg: '用户不存在'
 				})
 			}
+		}
+	})
+}
+
+//编辑用户默认地址
+exports.setDefault = (req, res) => {
+	let uId = req.session.user._id
+	let aId = req.body.aId
+	console.log(aId)
+	User.findById(uId, (err, _user) => {
+		if (_user) {
+			_user.addressList.forEach((item) => {
+				console.log(item._id)
+				if (item._id == aId) {
+					item.isDefault = true
+				} else {
+					item.isDefault = false
+				}
+			})
+			_user.save((err, user2) => {
+				if (err) {
+					return res.json({
+						status: 0,
+						result: '',
+						msg: '设置默认地址失败，请稍后重试'
+					})
+				} else {
+					return res.json({
+						status: 1,
+						result: user2.addressList,
+						msg: '设置默认地址成功'
+					})
+				}
+			})
+		} else {
+			return res.json({
+				status: 0,
+				result: '',
+				msg: '用户不存在'
+			})
 		}
 	})
 }
@@ -269,11 +350,13 @@ exports.editCart = (req, res) => {
 				if (err) {
 					return res.json({
 						status: 0,
+						result: '',
 						msg: '编辑购物车失败，请稍后重试'
 					})
 				} else {
 					return res.json({
 						status: 1,
+						result: user2.cartList,
 						msg: '编辑购物车成功'
 					})
 				}

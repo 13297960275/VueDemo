@@ -172,14 +172,14 @@
 						axios.get('/goods/getproducts').then((result) => {
 							if (result.data.status === 1) {
 								let prods = result.data.result.list
-								for (let j = 0; j < res.msg.length; j++) {
+								for (let j = 0; j < res.result.length; j++) {
 									for (let i = 0; i < prods.length; i++) {
-										if (prods[i]._id === res.msg[j].productId) {
-											res.msg[j].product = prods[i]
+										if (prods[i]._id === res.result[j].productId) {
+											res.result[j].product = prods[i]
 										}
 									}
 								}
-								this.cartList = res.msg
+								this.cartList = res.result
 							} else {
 								this.cartList = []
 							}
