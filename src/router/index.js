@@ -14,6 +14,7 @@ import SubTitle from '@/demoViews/SubTitle'
 import GoodList from './../views/GoodList'
 import Cart from './../views/Cart'
 import Address from './../views/Address'
+import Order from './../views/Order'
 
 Vue.use(Router)
 
@@ -120,6 +121,11 @@ export default new Router({
 			path: '/address',
 			name: 'address',
 			component: Address
+		},
+		{
+			path: '/order',
+			name: 'order',
+			component: Order
 		}
 	]
 })

@@ -39,7 +39,7 @@ module.exports = (app) => {
 	app.post('/users/editcart', userCtrl.userSignInRequired, userCtrl.editCart)
 
 	// 编辑用户购物车
-	app.post('/users/setdefault', userCtrl.userSignInRequired, userCtrl.setDefault)
+	app.post('/users/cudaddress', userCtrl.userSignInRequired, userCtrl.CUDAddress)
 
 	// 用户登录
 	app.post('/users/signin', userCtrl.signIn)

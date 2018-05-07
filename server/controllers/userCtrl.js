@@ -286,33 +286,50 @@ exports.removeCart = (req, res) => {
 	})
 }
 
-//编辑用户默认地址
-exports.setDefault = (req, res) => {
+// 用户地址CUD
+exports.CUDAddress = (req, res) => {
 	let uId = req.session.user._id
-	let aId = req.body.aId
-	console.log(aId)
+	let params = req.body.params
+	let type = req.body.type
 	User.findById(uId, (err, _user) => {
 		if (_user) {
-			_user.addressList.forEach((item) => {
-				console.log(item._id)
-				if (item._id == aId) {
-					item.isDefault = true
-				} else {
-					item.isDefault = false
-				}
-			})
+			let msg = ''
+			switch (type) {
+				case 0:
+					_user.addressList.forEach((item) => {
+						if (item._id == params) {
+							item.isDefault = true
+						} else {
+							item.isDefault = false
+						}
+					})
+					msg = '设置默认地址'
+					break;
+				case 1:
+					_user.addressList.push(params)
+					msg = '添加地址'
+					break;
+				case -1:
+					let index = _user.addressList.findIndex(prod => prod._id == params)
+					_user.addressList.splice(index, 1)
+					msg = '删除地址'
+					break;
+				default:
+					// statements_def
+					break;
+			}
 			_user.save((err, user2) => {
 				if (err) {
 					return res.json({
 						status: 0,
 						result: '',
-						msg: '设置默认地址失败，请稍后重试'
+						msg: msg + '失败，请稍后重试'
 					})
 				} else {
 					return res.json({
 						status: 1,
 						result: user2.addressList,
-						msg: '设置默认地址成功'
+						msg: msg + '成功'
 					})
 				}
 			})
