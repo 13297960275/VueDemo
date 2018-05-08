@@ -171,6 +171,7 @@
 					let res = resp.data
 					if (res.status === 1) {
 						this.addressList = res.result
+						this.selectedAddrId = this.addressList[this.addressList.findIndex(addr => addr.isDefault === true)]._id
 					} else {
 						this.addressList = []
 					}

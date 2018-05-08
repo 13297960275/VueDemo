@@ -41,6 +41,12 @@ module.exports = (app) => {
 	// 编辑用户购物车
 	app.post('/users/cudaddress', userCtrl.userSignInRequired, userCtrl.CUDAddress)
 
+	// 创建订单
+	app.post('/users/makeorder', userCtrl.userSignInRequired, userCtrl.makeOrder)
+	
+	// 获取订单
+	app.get('/users/getorder', userCtrl.userSignInRequired, userCtrl.getOrder)
+
 	// 用户登录
 	app.post('/users/signin', userCtrl.signIn)
 

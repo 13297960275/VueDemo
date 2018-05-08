@@ -15,10 +15,38 @@ import GoodList from './../views/GoodList'
 import Cart from './../views/Cart'
 import Address from './../views/Address'
 import Order from './../views/Order'
+import OrderSuccess from './../views/OrderSuccess'
 
 Vue.use(Router)
 
 export default new Router({
+	routes: [
+		{
+			path: '/',
+			name: 'GoodList',
+			component: GoodList
+		},
+		{
+			path: '/cart',
+			name: 'cart',
+			component: Cart
+		},
+		{
+			path: '/address',
+			name: 'address',
+			component: Address
+		},
+		{
+			path: '/order',
+			name: 'order',
+			component: Order
+		},
+		{
+			path: '/ordersuccess',
+			name: 'ordersuccess',
+			component: OrderSuccess
+		}
+	]
 	/* // demo start
 	mode: 'history', // history路由模式，去掉#
 	// mode: 'hash', // has路由模式，須#
@@ -105,27 +133,4 @@ export default new Router({
 	}]
 
 	// demo end */
-
-	routes: [
-		{
-			path: '/',
-			name: 'GoodList',
-			component: GoodList
-		},
-		{
-			path: '/cart',
-			name: 'cart',
-			component: Cart
-		},
-		{
-			path: '/address',
-			name: 'address',
-			component: Address
-		},
-		{
-			path: '/order',
-			name: 'order',
-			component: Order
-		}
-	]
 })

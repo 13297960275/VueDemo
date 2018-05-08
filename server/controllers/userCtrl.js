@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const Product = require('../models/product')
+const Util = require('../common/utils')
 const fs = require('fs')
 const path = require('path')
 
@@ -144,7 +145,7 @@ exports.signIn = (req, res) => {
 		password: req.body.userPwd
 	}
 
-	// console.log(_user.name + '===' + _user.password)
+	console.log(_user.name + '===' + _user.password)
 
 	User.findOne({
 		name: _user.name
@@ -163,35 +164,35 @@ exports.signIn = (req, res) => {
 				result: _user.name,
 				msg: '用户未注册'
 			})
+		} else {
+			// 密码比对
+			user.comparePassword(_user.password, (err, isMatch) => {
+				if (err) {
+					return res.json({
+						status: 0,
+						result: '',
+						msg: '服务器错误，请稍后重试'
+					})
+				}
+
+				if (isMatch) { // 密码匹配
+					// 将user信息通过session写到cookie
+					req.session.user = user
+
+					return res.json({
+						status: 1,
+						result: user.name,
+						msg: ''
+					})
+				} else { // 密码不匹配
+					res.json({
+						status: 0,
+						result: '',
+						msg: '密码不正确'
+					})
+				}
+			})
 		}
-
-		// 密码比对
-		user.comparePassword(_user.password, (err, isMatch) => {
-			if (err) {
-				return res.json({
-					status: 0,
-					result: '',
-					msg: '服务器错误，请稍后重试'
-				})
-			}
-
-			if (isMatch) { // 密码匹配
-				// 将user信息通过session写到cookie
-				req.session.user = user
-
-				return res.json({
-					status: 1,
-					result: user.name,
-					msg: ''
-				})
-			} else { // 密码不匹配
-				res.json({
-					status: 0,
-					result: '',
-					msg: '密码不正确'
-				})
-			}
-		})
 	})
 }
 
@@ -386,6 +387,90 @@ exports.editCart = (req, res) => {
 		}
 	})
 }
+
+// 创建订单
+exports.makeOrder = (req, res) => {
+	let uId = req.session.user._id
+
+	User.findById(uId, (err, user) => {
+		if (err) {
+			return res.json({
+				status: 0,
+				result: '',
+				msg: '服务器错误，请稍后重试'
+			})
+		} else {
+			let goods = []
+			user.cartList.filter((item) => {
+				if (item.checked) {
+					goods.push(item)
+				}
+			})
+
+			let orderId = '1314' + parseInt(Math.random() * 90 + 10) + new Date().Format('yyyyMMddhhmmss')
+
+			let order = {
+				orderId: orderId,
+				createDate: Date.now(),
+				addrId: req.body.addrId,
+				orderTotal: req.body.orderTotal,
+				totalPrice: req.body.totalPrice,
+				shipping: req.body.shipping,
+				discount: req.body.discount,
+				tax: req.body.tax,
+				goods: goods
+			}
+			user.orderList.push(order)
+
+			user.save((err, user2) => {
+				if (err) {
+					return res.json({
+						status: 0,
+						result: '',
+						msg: '创建订单失败，请稍后重试'
+					})
+				} else {
+					return res.json({
+						status: 1,
+						result: orderId,
+						msg: '创建订单成功'
+					})
+				}
+			})
+		}
+	})
+}
+
+// 获取订单
+exports.getOrder = (req, res) => {
+	let uId = req.session.user._id
+	let orderId = req.query.orderId
+
+	User.findById(uId, (err, _user) => {
+		if (_user) {
+			let orderTotal = 0
+			_user.orderList.filter((item) => {
+				if (item.orderId == orderId) {
+					orderTotal = item.orderTotal
+				}
+			})
+			return res.json({
+				status: 1,
+				result: {
+					orderId: orderId,
+					orderTotal: orderTotal
+				},
+				msg: '获取订单成功'
+			})
+		} else {
+			return res.json({
+				status: 0,
+				msg: '用户不存在'
+			})
+		}
+	})
+}
+
 
 //  admin delete user fun
 exports.delUserFun = (req, res) => {

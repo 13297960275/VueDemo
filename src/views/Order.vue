@@ -103,10 +103,10 @@
 
 				<div class="order-foot-wrap">
 					<div class="prev-btn-wrap">
-						<button class="btn btn--m">Previous</button>
+						<router-link class="btn btn--m" to="address">Previous</router-link>
 					</div>
 					<div class="next-btn-wrap">
-						<button class="btn btn--m btn--red">Proceed to payment</button>
+						<button class="btn btn--m btn--red" @click="makeOrder">Proceed to payment</button>
 					</div>
 				</div>
 			</div>
@@ -179,6 +179,27 @@
 					}
 				}).catch((err) => {
 					console.log(err)
+				})
+			},
+			makeOrder () {
+				axios.post('/users/makeorder', {
+					totalPrice: this.totalPrice,
+					// cartList: this.cartList,
+					addrId: this.$route.query.addressId,
+					shipping: this.shipping,
+					discount: this.discount,
+					tax: this.tax,
+					orderTotal: this.orderTotal
+				}).then((resp) => {
+					let res = resp.data
+					if (res.status === 1) {
+						console.log(res.msg)
+						this.$router.push({
+							path: '/ordersuccess?orderId=' + res.result
+						})
+					} else {
+						console.log(res.msg)
+					}
 				})
 			}
 		}

@@ -35,6 +35,15 @@ const userSchema = new Schema({
 		checkedNum: Number
 	}],
 	orderList: Array,
+	// orderList: [{
+	// 	selectedAddrId: String,
+	// 	cartList: String,
+	// 	totalPrice: Number,
+	// 	shipping: Number,
+	// 	discount: Number,
+	// 	Tax: Number,
+	// 	orderTotal: Number
+	// }],
 	addressList: [{
 		userName: String,
 		postCode: String,
@@ -66,63 +75,63 @@ const userSchema = new Schema({
 })
 
 userSchema.pre('save', function(next) {
-	let user = this
-	// console.log('user.js===user=' + user)
+	var user = this;
+	// console.log('user.js===user=' + user);
 	if (this.isNew) {
-		this.meta.createAt = this.meta.updateAt = Date.now()
+		this.meta.createAt = this.meta.updateAt = Date.now();
 	} else {
-		this.meta.updateAt = Date.now()
+		this.meta.updateAt = Date.now();
 	}
 
 	bcrypt.genSalt(SALT_WORK_FACTOR, function(err, salt) {
 		if (err) {
-			return next(err)
+			return next(err);
 		}
-		// console.log('user.js===salt=' + salt)
+		// console.log('user.js===salt=' + salt);
 
 		bcrypt.hash(user.password, salt, function(err, hash) {
 			if (err) {
-				return next(err)
+				return next(err);
 			}
 
-			// console.log('user.js===hash=' + hash)
-			user.password = hash
-			next()
-		})
-	})
+			// console.log('user.js===hash=' + hash);
+			user.password = hash;
+			next();
+		});
+	});
 
-	// next()// 加上这个会不执行密码加密的操作
-})
+	// next();// 加上这个会不执行密码加密的操作
+});
 
 userSchema.methods = {
 	comparePassword: function(_pwd, cb) {
-		// console.log('_pwd'+_pwd)
-		// console.log('this.password'+this.password)
+		console.log('_pwd' + _pwd)
+		console.log('this.password' + this.password)
 		bcrypt.compare(_pwd, this.password, function(err, isMatch) {
 			if (err) {
-				return cb(err)
+				return cb(err);
 			}
-			// console.log(isMatch)
+			console.log(isMatch)
 
-			cb(null, isMatch)
-		})
+			cb(null, isMatch);
+		});
 	}
-}
+};
 
 userSchema.statics = {
 	fetch: function(cb) {
 		return this
 			.find({})
 			.sort('meta.updateAt')
-			.exec(cb)
+			.exec(cb);
 	},
 	findById: function(id, cb) {
 		return this
 			.findOne({
 				_id: id
 			})
-			.exec(cb)
+			.exec(cb);
 	}
-}
+};
 
-module.exports = userSchema
+module.exports = userSchema;
