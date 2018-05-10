@@ -147,7 +147,7 @@
 					if (res.status === 1) {
 						this.loginFlag = false
 						this.loginName = this.userName
-						this.$store.commit('updateDisplayName', res.result.name)
+						this.$store.commit('updateDisplayName', res.result)
 					} else {
 						this.errorFlag = true
 						this.formErrorMsg = res.msg
@@ -164,6 +164,8 @@
 					if (res.status === 1) {
 						this.loginFlag = false
 						this.loginName = ''
+						this.$store.commit('updateDisplayName', '')
+						this.$store.commit('updateCartCount', 0)
 					} else {
 
 					}

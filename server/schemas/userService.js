@@ -75,7 +75,7 @@ const userSchema = new Schema({
 })
 
 userSchema.pre('save', function(next) {
-	var user = this;
+	let user = this;
 	// console.log('user.js===user=' + user);
 	if (this.isNew) {
 		this.meta.createAt = this.meta.updateAt = Date.now();
@@ -87,9 +87,9 @@ userSchema.pre('save', function(next) {
 		if (err) {
 			return next(err);
 		}
-		// console.log('user.js===salt=' + salt);
+	// 	console.log('user.js===salt=' + salt);
 
-		bcrypt.hash(user.password, salt, function(err, hash) {
+		bcrypt.hash(user.password, SALT_WORK_FACTOR, function(err, hash) {
 			if (err) {
 				return next(err);
 			}
@@ -105,13 +105,13 @@ userSchema.pre('save', function(next) {
 
 userSchema.methods = {
 	comparePassword: function(_pwd, cb) {
-		console.log('_pwd' + _pwd)
-		console.log('this.password' + this.password)
+		// console.log('_pwd===' + _pwd)
+		// console.log('this.password===' + this.password)
 		bcrypt.compare(_pwd, this.password, function(err, isMatch) {
 			if (err) {
 				return cb(err);
 			}
-			console.log(isMatch)
+			// console.log(isMatch)
 
 			cb(null, isMatch);
 		});

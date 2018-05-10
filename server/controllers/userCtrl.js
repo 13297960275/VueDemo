@@ -129,7 +129,7 @@ exports.signUp = (req, res) => {
 
 					return res.json({
 						status: 1,
-						result: user2,
+						result: user2.name,
 						msg: ''
 					})
 				}
@@ -145,7 +145,7 @@ exports.signIn = (req, res) => {
 		password: req.body.userPwd
 	}
 
-	console.log(_user.name + '===' + _user.password)
+	// console.log(_user.name + '===' + _user.password)
 
 	User.findOne({
 		name: _user.name
@@ -165,6 +165,7 @@ exports.signIn = (req, res) => {
 				msg: '用户未注册'
 			})
 		} else {
+			// console.log(user.password)
 			// 密码比对
 			user.comparePassword(_user.password, (err, isMatch) => {
 				if (err) {
@@ -177,6 +178,7 @@ exports.signIn = (req, res) => {
 
 				if (isMatch) { // 密码匹配
 					// 将user信息通过session写到cookie
+					// console.log('isMatch')
 					req.session.user = user
 
 					return res.json({
@@ -185,6 +187,7 @@ exports.signIn = (req, res) => {
 						msg: ''
 					})
 				} else { // 密码不匹配
+					// console.log('is not Match')
 					res.json({
 						status: 0,
 						result: '',
