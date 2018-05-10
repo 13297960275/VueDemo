@@ -238,6 +238,7 @@
 					this.formMsg = res.msg
 					this.isStatusOK = false
 				} else {
+					this.$store.commit('updateCartCount', res.result.length)
 					this.modalShow = true
 					this.formTitle = '成功'
 					this.formMsg = '添加购物车成功'

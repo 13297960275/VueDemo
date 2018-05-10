@@ -10,12 +10,12 @@
 				<div class="navbar-right-container" style="display: flex;">
 					<div class="navbar-menu-container">
 						<!--<a href="/" class="navbar-link">我的账户</a>-->
-						<span v-if="loginName" class="navbar-link">欢迎&nbsp;|&nbsp;{{loginName}}</span>
+						<span v-if="loginName" class="navbar-link">欢迎&nbsp;|&nbsp;{{displayName}}</span>
 						<a href="javascript:void(0)" v-if="!loginName" class="navbar-link" @click="showLogin(1)">Sign In</a>
 						<a href="javascript:void(0)" v-if="!loginName" class="navbar-link" @click="showLogin(0)">Sign Up</a>
 						<a href="javascript:void(0)" v-if="loginName" class="navbar-link" @click="signOut">Sign Out</a>
 						<div class="navbar-cart-container">
-							<span class="navbar-cart-count"></span>
+							<span class="navbar-cart-count">{{cartCount}}</span>
 							<a class="navbar-link navbar-cart-link" href="/#/cart">
 								<svg class="navbar-cart-logo">
 									<use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart"></use>
@@ -62,6 +62,7 @@
 
 <script>
 	import axios from 'axios'
+	import {mapState} from 'vuex'
 	import SvgColl from './SvgColl'
 	export default {
 		name: 'NavHeader',
@@ -83,6 +84,16 @@
 		},
 		mounted () {
 			this.checkLogin()
+			this.getCartCount()
+		},
+		computed: {
+			...mapState(['displayName', 'cartCount'])
+			// cartCount () {
+			// 	return this.$store.state.cartCount
+			// },
+			// displayName () {
+			// 	return this.$store.state.displayName
+			// }
 		},
 		methods: {
 			checkLogin () {
@@ -93,6 +104,7 @@
 					} else {
 						this.loginName = ''
 					}
+					this.$store.commit('updateDisplayName', res.result)
 				}).catch((err) => {
 					console.log(err)
 					this.errorFlag = true
@@ -135,6 +147,7 @@
 					if (res.status === 1) {
 						this.loginFlag = false
 						this.loginName = this.userName
+						this.$store.commit('updateDisplayName', res.result.name)
 					} else {
 						this.errorFlag = true
 						this.formErrorMsg = res.msg
@@ -158,6 +171,16 @@
 					console.log(err)
 					this.errorFlag = true
 					this.formErrorMsg = '服务器错误，请稍后重试'
+				})
+			},
+			getCartCount () {
+				axios.get('/users/userinfo?type=cart').then((resp) => {
+					let res = resp.data
+					if (res.status === 1) {
+						this.$store.commit('updateCartCount', res.result.length)
+					}
+				}).catch((err) => {
+					console.log(err)
 				})
 			}
 		}

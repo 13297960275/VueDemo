@@ -72,7 +72,7 @@
 						this.orderTotal = res.result.orderTotal
 					} else {
 						this.orderId = ''
-						this.orderTotal = ''			
+						this.orderTotal = ''
 					}
 				})
 			}

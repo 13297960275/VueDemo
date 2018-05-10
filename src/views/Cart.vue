@@ -169,6 +169,7 @@
 				axios.get('/users/userinfo?type=cart').then((resp) => {
 					let res = resp.data
 					if (res.status === 1) {
+						this.$store.commit('updateCartCount', res.result.length)
 						axios.get('/goods/getproducts').then((result) => {
 							if (result.data.status === 1) {
 								let prods = result.data.result.list

@@ -105,15 +105,15 @@
 						</li>
 						<li class="regi_form_input noMargin">
 							<i class="icon IconMobile"></i>
-							<input type="password" v-model="address.postCode" placeholder="User Post Code" class="regi_login_input" tabindex="2" name="">
+							<input type="text" v-model="address.postCode" placeholder="User Post Code" class="regi_login_input" tabindex="2" name="">
 						</li>
 						<li class="regi_form_input noMargin">
 							<i class="icon IconMobile"></i>
-							<input type="password" v-model="address.streetName" placeholder="User Address" class="regi_login_input" tabindex="3" name="">
+							<input type="text" v-model="address.streetName" placeholder="User Address" class="regi_login_input" tabindex="3" name="">
 						</li>
 						<li class="regi_form_input noMargin">
 							<i class="icon IconMobile"></i>
-							<input type="password" v-model="address.userTel" placeholder="User Mobole" class="regi_login_input" tabindex="4" name="">
+							<input type="text" v-model="address.userTel" placeholder="User Mobole" class="regi_login_input" tabindex="4" name="">
 						</li>
 					</ul>
 				</form>
@@ -201,6 +201,7 @@
 						this.addressList = []
 					}
 					this.modalShow = false
+					this.address = {}
 				}).catch((err) => {
 					console.log(err)
 					this.modalShow = false
@@ -211,10 +212,17 @@
 					this.formTitle = '地址信息'
 					this.isAdd = true
 				} else {
-					this.formTitle = '警告'
-					this.formMsg = '确认移除该地址'
-					this.delAddressId = aId
-					this.isAdd = false
+					if (this.addressList.length <= 1) {
+						this.formTitle = '提示'
+						this.formMsg = '最后一条地址信息了，确认移除该地址？'
+						this.delAddressId = aId
+						this.isAdd = false
+					} else {
+						this.formTitle = '警告'
+						this.formMsg = '确认移除该地址'
+						this.delAddressId = aId
+						this.isAdd = false
+					}
 				}
 				this.modalShow = true
 			},
